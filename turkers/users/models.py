@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class Usuario(AbstractUser):
-    
+
+class User(AbstractUser):
     RG = 'RG'
     TK = 'TK'
 
@@ -11,4 +11,4 @@ class Usuario(AbstractUser):
         (TK, 'Turker User'),
     ]
 
-    user_type = models.CharField(max_length = 2, choices = USER_TYPE, blank = False, default=RG)
+    user_type = models.CharField(max_length=2, choices=USER_TYPE, blank=False, null=False, default=RG)
