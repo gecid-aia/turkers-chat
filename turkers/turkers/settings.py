@@ -141,6 +141,9 @@ EMAIL_FILE_PATH = "/tmp"
 
 
 ACCOUNT_ACTIVATION_DAYS=config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'chats:index'
+LOGOUT_REDIRECT_URL = 'chats:index'
 
 
 # Configure Django App for Heroku.

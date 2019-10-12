@@ -9,6 +9,7 @@ from users.forms import UserRegistrationForm
 from users.views import AboutView, ActivationView
 
 urlpatterns = [
+    path(r'', include('chats.urls', namespace='chats')),
     path('register/',
         RegistrationView.as_view(form_class=UserRegistrationForm),
         name='django_registration_register',
