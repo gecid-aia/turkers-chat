@@ -44,6 +44,7 @@ THIRDY_PARTY_LIBS = [
     'django_extensions',
     'debug_toolbar',
     'django_registration',
+    'naomi',
 ]
 
 PROJ_APPS = [
@@ -133,6 +134,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_FILE_PATH = "/tmp"
 
 
 # Configure Django App for Heroku.
