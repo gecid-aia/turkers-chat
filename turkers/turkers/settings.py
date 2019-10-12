@@ -43,6 +43,8 @@ DJANGO_APPS = [
 THIRDY_PARTY_LIBS = [
     'django_extensions',
     'debug_toolbar',
+    'django_registration',
+    'naomi',
 ]
 
 PROJ_APPS = [
@@ -67,7 +69,7 @@ ROOT_URLCONF = 'turkers.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR.joinpath('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,6 +134,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_FILE_PATH = "/tmp"
+
+
+ACCOUNT_ACTIVATION_DAYS=config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
 
 
 # Configure Django App for Heroku.
