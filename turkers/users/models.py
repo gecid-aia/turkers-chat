@@ -12,3 +12,7 @@ class User(AbstractUser):
     ]
 
     user_type = models.CharField(max_length=2, choices=USER_TYPE, blank=False, null=False, default=RG)
+
+    @property
+    def is_regular(self):
+        return self.user_type == self.RG
