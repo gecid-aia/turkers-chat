@@ -15,7 +15,11 @@
         </div>
 
         <footer class="bold">
-            <p>You are logged in as Anônimo 1</p>
+            {% if request.user.is_authenticated %}
+            <p>You are logged in as {{ request.user.username }}</p>
+            {% else %}
+            <p>You are not logged in</p>
+            {% endif %}
             <p class=""><strike>About</strike></p>
         </footer>
     </body>
