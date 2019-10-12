@@ -140,6 +140,9 @@ EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.
 EMAIL_FILE_PATH = "/tmp"
 
 
+ACCOUNT_ACTIVATION_DAYS=config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
+
+
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
