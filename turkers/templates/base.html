@@ -8,13 +8,15 @@
     </head>
     <body>
         <nav class="bold header-text"><p class="bold">Exchange w/ Turker</p></nav>
-        <div class="clearfix">
-           {% block content %}
-           
-        </div>
-        <footer>
 
-        </footer>
+        <div id="content" class="clearfix">
+        {% block content %}
         {% endblock %}
+        </div>
+
+        <footer class="bold">
+            <p>You are logged in as Anônimo 1</p>
+            <p class=""><strike>About</strike></p>
+        </footer>
     </body>
 </html>
