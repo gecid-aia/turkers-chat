@@ -43,6 +43,7 @@ DJANGO_APPS = [
 THIRDY_PARTY_LIBS = [
     'django_extensions',
     'debug_toolbar',
+    'django_registration',
 ]
 
 PROJ_APPS = [
