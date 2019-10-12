@@ -14,7 +14,7 @@ cd turkers-chat
 cp env.example .env  # talvez você precisará editar o .env de acordo com suas configurações
 
 # Instalar dependências
-pip install -r requirements.txt
+pip install -r dev-requirements.txt
 ```
 
 ## Executando a aplicação
