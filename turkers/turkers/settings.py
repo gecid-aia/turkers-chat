@@ -45,6 +45,8 @@ THIRDY_PARTY_LIBS = [
     'debug_toolbar',
     'django_registration',
     'naomi',
+    'rest_framework',
+    'rest_framework_swagger',
 ]
 
 PROJ_APPS = [
@@ -145,6 +147,9 @@ ACCOUNT_ACTIVATION_DAYS=config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'chats:index'
 LOGOUT_REDIRECT_URL = 'chats:index'
+
+
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
 
 
 # Configure Django App for Heroku.
