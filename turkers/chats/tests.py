@@ -15,7 +15,7 @@ class ChatTests(TestCase):
         self.turker = baker.make(User, user_type=User.TK)
 
     def test_cannot_create_chat_for_regular_user(self):
-        assert Chat.objects.get_colective_chat()  # created by initial migration
+        assert Chat.objects.get_collective_chat()  # created by initial migration
 
         chat = Chat(turker=self.turker, info='turker bio')
         chat.save()
@@ -29,7 +29,7 @@ class ChatTests(TestCase):
         with pytest.raises(ValueError):
             chat.save()
 
-        chat = Chat()  # can have only one colective chat
+        chat = Chat()  # can have only one collective chat
         with pytest.raises(ValueError):
             chat.save()
 
@@ -37,7 +37,7 @@ class ChatTests(TestCase):
 class MessageSerializerTests(TestCase):
 
     def setUp(self):
-        self.chat = Chat.objects.get_colective_chat()
+        self.chat = Chat.objects.get_collective_chat()
 
     def test_serialize_regular_user_message(self):
         user = baker.make(User, user_type=User.RG)
@@ -84,10 +84,10 @@ class MessageSerializerTests(TestCase):
 class ChatSerializerTests(TestCase):
 
     def test_serialize_chat(self):
-        chat = Chat.objects.get_colective_chat()
+        chat = Chat.objects.get_collective_chat()
 
         expected = {
-            'title': 'Colective Chat',
+            'title': 'Collective Chat',
             'info': '',
             'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
         }

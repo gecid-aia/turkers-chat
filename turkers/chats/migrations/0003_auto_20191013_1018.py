@@ -3,7 +3,7 @@
 from django.db import migrations
 
 
-def create_colective_chat(apps, schema_editor):
+def create_collective_chat(apps, schema_editor):
     Chat = apps.get_model('chats.Chat')
     Chat.objects.create()
 
@@ -15,5 +15,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_colective_chat)
+        migrations.RunPython(create_collective_chat)
     ]

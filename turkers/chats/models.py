@@ -6,7 +6,7 @@ from users.models import User
 
 class ChatManager(models.Manager):
 
-    def get_colective_chat(self):
+    def get_collective_chat(self):
         return self.get(turker__isnull=True)
 
     def get_turker_chat(self, turker_id):
@@ -24,8 +24,8 @@ class Chat(models.Model):
             raise ValueError(f"User {self.turker} is not a turker.")
         elif not self.turker_id:
             try:
-                chat = Chat.objects.get_colective_chat()
-                raise ValueError(f"Colective chat already exists with the id {chat.id}")
+                chat = Chat.objects.get_collective_chat()
+                raise ValueError(f"Collective chat already exists with the id {chat.id}")
             except Chat.DoesNotExist:
                 pass
         return super().save(*args, **kwargs)
@@ -33,7 +33,7 @@ class Chat(models.Model):
     @property
     def title(self):
         if not self.turker_id:
-            return "Colective Chat"
+            return "Collective Chat"
         return self.turker.username
 
     @property
