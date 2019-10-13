@@ -13,11 +13,7 @@ class ChatTests(TestCase):
         self.turker = baker.make(User, user_type=User.TK)
 
     def test_cannot_create_chat_for_regular_user(self):
-        chat = Chat()  # without turker == colective chat
-        chat.save()
-        assert chat.id
-        assert chat.title == 'Colective Chat'
-        assert chat == Chat.objects.get_colective_chat()
+        assert Chat.objects.get_colective_chat()  # created by initial migration
 
         chat = Chat(turker=self.turker, info='turker bio')
         chat.save()
