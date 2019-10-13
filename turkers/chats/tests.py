@@ -154,3 +154,38 @@ class TurkerChatEndpointTests(TestCase):
         response = self.client.get(self.url)
 
         assert 404 == response.status_code
+
+
+class ListChatMessagesEndpointTests(TestCase):
+
+    def setUp(self):
+        user = baker.make(User)
+        self.client.force_login(user)
+        self.chat = Chat.objects.get_collective_chat()
+        self.url = reverse('chats_api:chat_messages', args=[self.chat.id])
+
+    def test_login_required(self):
+        self.client.logout()
+
+        response = self.client.get(self.url)
+
+        assert 403 == response.status_code
+
+    def test_404_if_chat_does_not_exist(self):
+        self.url = reverse('chats_api:chat_messages', args=[1000])
+
+        response = self.client.get(self.url)
+
+        assert 404 == response.status_code
+
+    def test_get_paginated_messages_data(self):
+        messages = baker.make(Message, chat=self.chat, _quantity=42)
+
+        response = self.client.get(self.url)
+        data = response.json()
+
+        expected = MessageSerializer(instance=messages[::-1][:20], many=True).data
+        assert 200 == response.status_code
+        assert expected == data['results']
+        assert 42 == data['count']
+        assert 'next' in data
