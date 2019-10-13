@@ -1,7 +1,7 @@
 import pytest
 from model_bakery import baker
+from rest_framework.test import APITestCase as TestCase
 
-from django.test import TestCase
 from django.urls import reverse
 
 from chats.models import Chat, Message
@@ -94,3 +94,33 @@ class ChatSerializerTests(TestCase):
         serializer = ChatSerializer(instance=chat)
 
         assert expected == serializer.data
+
+
+class CollectiveChatEndpointTests(TestCase):
+
+    def setUp(self):
+        user = baker.make(User)
+        self.client.force_login(user)
+        self.chat = Chat.objects.get_collective_chat()
+        self.url = reverse('chats_api:collective')
+
+    def test_login_required(self):
+        self.client.logout()
+
+        response = self.client.get(self.url)
+
+        assert 403 == response.status_code
+
+    def test_get_chat_data(self):
+        response = self.client.get(self.url)
+        expected = ChatSerializer(instance=self.chat).data
+
+        assert 200 == response.status_code
+        assert expected == response.json()
+
+    def test_404_if_chat_is_deleted(self):
+        self.chat.delete()
+
+        response = self.client.get(self.url)
+
+        assert 404 == response.status_code
