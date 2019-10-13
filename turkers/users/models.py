@@ -16,3 +16,7 @@ class User(AbstractUser):
     @property
     def is_regular(self):
         return self.user_type == self.RG
+
+    @property
+    def is_turker(self):
+        return self.user_type == self.TK
