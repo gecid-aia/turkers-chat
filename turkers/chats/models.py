@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from users.models import User
 
@@ -44,3 +45,15 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
+    @property
+    def sender_username(self):
+        if not self.sender:
+            return 'Anonymous'
+        return self.sender.username
+
+    @property
+    def turker_chat_url(self):
+        if not self.sender or self.sender.is_regular:
+            return ''
+        return reverse('chats_api:turker', args=[self.sender.id])
