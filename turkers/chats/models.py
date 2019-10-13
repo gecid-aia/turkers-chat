@@ -20,3 +20,10 @@ class Chat(models.Model):
         if not self.turker_id:
             return "Colective Chat"
         return self.turker.username
+
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
+    content = models.TextField(blank=False, null=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
