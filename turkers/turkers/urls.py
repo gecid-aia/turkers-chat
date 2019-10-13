@@ -1,7 +1,8 @@
 from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
+from django.views.generic.base import TemplateView
 
 from django_registration.backends.activation.views import RegistrationView
 
@@ -14,6 +15,11 @@ urlpatterns = [
         RegistrationView.as_view(form_class=UserRegistrationForm),
         name='django_registration_register',
     ),
+    path('activate/complete/',
+        TemplateView.as_view(
+            template_name='django_registration/activation_complete.html'
+        ),
+        name='django_registration_activation_complete'),
     path('activate/<activation_key>/',
         ActivationView.as_view(),
         name='django_registration_activate'
