@@ -37,3 +37,16 @@ class ListChatMessagesEndpoint(ListAPIView):
     def get_queryset(self):
         chat = get_object_or_404(Chat, id=self.kwargs['chat_id'])
         return chat.messages.all()
+
+    def post(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=self.kwargs['chat_id'])
+
+        content = str(request.data.get('content', ''))
+        if not content:
+            return Response({'content': 'A new message must have content.'}, status=400)
+
+        new_msg = chat.messages.create(
+            sender=request.user,
+            content=content
+        )
+        return Response(self.serializer_class(instance=new_msg).data, status=201)

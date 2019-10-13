@@ -159,8 +159,8 @@ class TurkerChatEndpointTests(TestCase):
 class ListChatMessagesEndpointTests(TestCase):
 
     def setUp(self):
-        user = baker.make(User)
-        self.client.force_login(user)
+        self.user = baker.make(User)
+        self.client.force_login(self.user)
         self.chat = Chat.objects.get_collective_chat()
         self.url = reverse('chats_api:chat_messages', args=[self.chat.id])
 
@@ -189,3 +189,29 @@ class ListChatMessagesEndpointTests(TestCase):
         assert expected == data['results']
         assert 42 == data['count']
         assert 'next' in data
+
+    def test_add_new_message_on_post(self):
+        response = self.client.post(self.url, data={'content': 'new msg'})
+        new_msg = Message.objects.first()
+
+        assert 201 == response.status_code
+        assert 'new msg' == new_msg.content
+        assert MessageSerializer(instance=new_msg).data == response.json()
+        assert self.user == new_msg.sender
+        assert self.chat == new_msg.chat
+
+    def test_bad_request_if_no_messages(self):
+        response = self.client.post(self.url, data={'content': ''})
+        assert 400 == response.status_code
+        assert 'content' in response.json()
+
+        response = self.client.post(self.url, data={})
+        assert 400 == response.status_code
+        assert 'content' in response.json()
+
+        assert Message.objects.exists() is False
+
+    def test_404_post_on_unexisting_chat(self):
+        self.url = reverse('chats_api:chat_messages', args=[1000])
+        response = self.client.post(self.url, data={'content': 'new msg'})
+        assert 404 == response.status_code
