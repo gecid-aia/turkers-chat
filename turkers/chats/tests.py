@@ -17,11 +17,13 @@ class ChatTests(TestCase):
         chat.save()
         assert chat.id
         assert chat.title == 'Colective Chat'
+        assert chat == Chat.objects.get_colective_chat()
 
         chat = Chat(turker=self.turker, info='turker bio')
         chat.save()
         assert chat.id
         assert chat.title == self.turker.username
+        assert chat == Chat.objects.get_turker_chat(self.turker.id)
 
         regular_user = baker.make(User, user_type=User.RG)
         chat = Chat(turker=regular_user)

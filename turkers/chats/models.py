@@ -3,7 +3,18 @@ from django.db import models
 from users.models import User
 
 
+class ChatManager(models.Manager):
+
+    def get_colective_chat(self):
+        return self.get(turker__isnull=True)
+
+    def get_turker_chat(self, turker_id):
+        return self.get(turker_id=turker_id)
+
+
 class Chat(models.Model):
+    objects = ChatManager()
+
     turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.PROTECT)
     info = models.TextField(default='')
 
@@ -11,8 +22,11 @@ class Chat(models.Model):
         if self.turker_id and not self.turker.is_turker:
             raise ValueError(f"User {self.turker} is not a turker.")
         elif not self.turker_id:
-            if Chat.objects.filter(turker__isnull=True).exists():
-                raise ValueError(f"System can have only one general chat")
+            try:
+                chat = Chat.objects.get_colective_chat()
+                raise ValueError(f"Colective chat already exists with the id {chat.id}")
+            except Chat.DoesNotExist:
+                pass
         return super().save(*args, **kwargs)
 
     @property
