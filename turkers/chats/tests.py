@@ -124,3 +124,33 @@ class CollectiveChatEndpointTests(TestCase):
         response = self.client.get(self.url)
 
         assert 404 == response.status_code
+
+
+class TurkerChatEndpointTests(TestCase):
+
+    def setUp(self):
+        user = baker.make(User, user_type=User.TK)
+        self.client.force_login(user)
+        self.chat = baker.make(Chat, turker=user)
+        self.url = reverse('chats_api:turker', args=[user.id])
+
+    def test_login_required(self):
+        self.client.logout()
+
+        response = self.client.get(self.url)
+
+        assert 403 == response.status_code
+
+    def test_get_chat_data(self):
+        response = self.client.get(self.url)
+        expected = ChatSerializer(instance=self.chat).data
+
+        assert 200 == response.status_code
+        assert expected == response.json()
+
+    def test_404_if_chat_does_not_exist(self):
+        self.url = reverse('chats_api:turker', args=[1000])
+
+        response = self.client.get(self.url)
+
+        assert 404 == response.status_code

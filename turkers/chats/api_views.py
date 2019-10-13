@@ -19,7 +19,14 @@ class CollectiveChatEndpoint(APIView):
 
 
 class TurkerChatEndpoint(APIView):
-    pass
+
+    def get(self, request, turker_id):
+        try:
+            chat = Chat.objects.get_turker_chat(turker_id)
+        except Chat.DoesNotExist:
+            raise Http404
+        serializer = ChatSerializer(instance=chat)
+        return Response(serializer.data)
 
 
 class ListChatMessagesEndpoint(APIView):
