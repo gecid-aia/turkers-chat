@@ -49,6 +49,7 @@ THIRDY_PARTY_LIBS = [
 
 PROJ_APPS = [
     'users',
+    'chats',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRDY_PARTY_LIBS + PROJ_APPS
