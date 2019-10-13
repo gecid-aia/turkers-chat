@@ -7,3 +7,4 @@ share/
 lib/
 include/
 src/
+turkers/staticfiles/

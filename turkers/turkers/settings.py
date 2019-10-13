@@ -45,10 +45,13 @@ THIRDY_PARTY_LIBS = [
     'debug_toolbar',
     'django_registration',
     'naomi',
+    'rest_framework',
+    'rest_framework_swagger',
 ]
 
 PROJ_APPS = [
     'users',
+    'chats',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRDY_PARTY_LIBS + PROJ_APPS
@@ -144,6 +147,19 @@ ACCOUNT_ACTIVATION_DAYS=config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'chats:index'
 LOGOUT_REDIRECT_URL = 'chats:index'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
 
 
 # Configure Django App for Heroku.
