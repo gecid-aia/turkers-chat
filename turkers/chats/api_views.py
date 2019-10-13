@@ -7,3 +7,7 @@ class ColectiveChatEndpoint(APIView):
 
 class TurkerChatEndpoint(APIView):
     pass
+
+
+class ListChatMessagesEndpoint(APIView):
+    pass

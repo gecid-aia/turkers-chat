@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from chats.models import Chat, Message
-from chats.serializers import MessageSerializer
+from chats.serializers import MessageSerializer, ChatSerializer
 from users.models import User
 
 
@@ -77,5 +77,20 @@ class MessageSerializerTests(TestCase):
             'turker_chat_url': reverse('chats_api:turker', args=[user.id]),
         }
         serializer = MessageSerializer(instance=msg)
+
+        assert expected == serializer.data
+
+
+class ChatSerializerTests(TestCase):
+
+    def test_serialize_chat(self):
+        chat = Chat.objects.get_colective_chat()
+
+        expected = {
+            'title': 'Colective Chat',
+            'info': '',
+            'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
+        }
+        serializer = ChatSerializer(instance=chat)
 
         assert expected == serializer.data

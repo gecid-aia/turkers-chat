@@ -11,4 +11,5 @@ urlpatterns = [
     path('', schema_view),
     path('chat/colective/', views.ColectiveChatEndpoint.as_view(), name='colective'),
     path('chat/turker/<int:turker_id>/', views.ColectiveChatEndpoint.as_view(), name='turker'),
+    path('chat/<int:chat_id>/messages/', views.ListChatMessagesEndpoint.as_view(), name='chat_messages'),
 ]

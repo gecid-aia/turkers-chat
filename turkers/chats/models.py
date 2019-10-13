@@ -36,6 +36,10 @@ class Chat(models.Model):
             return "Colective Chat"
         return self.turker.username
 
+    @property
+    def messages_url(self):
+        return reverse('chats_api:chat_messages', args=[self.id])
+
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
