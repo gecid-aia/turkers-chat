@@ -2,9 +2,13 @@
 db.sqlite3
 .DS_Store
 .env
+bin/
 local/
 share/
 lib/
 include/
 src/
 turkers/staticfiles/
+node_modules
+bundles
+yarn.lock
