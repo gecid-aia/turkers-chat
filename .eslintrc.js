@@ -7,6 +7,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-console': ['error', { allow: ['error'] }],
     'no-underscore-dangle': 'off',
+    'import/prefer-default-export': 'off'
   },
   env: {
     es6: true,
