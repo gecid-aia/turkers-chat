@@ -11,3 +11,4 @@ turkers/staticfiles/
 node_modules
 bundles
 yarn.lock
+.vscode
