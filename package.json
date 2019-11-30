@@ -34,10 +34,6 @@
         "node-sass": "^4.12.0",
         "prettier": "^1.18.2",
         "react-hot-loader": "^4.11.1",
-        "react-redux": "^7.1.0",
-        "react-spinners-kit": "^1.9.0",
-        "redux": "^4.0.1",
-        "redux-thunk": "^2.3.0",
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "styled-components": "^2.4.1",
@@ -48,8 +44,14 @@
         "whatwg-fetch": "^3.0.0"
     },
     "dependencies": {
+        "lodash": "^4.17.15",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
-        "rel-events": "^0.3.2"
+        "react-draggable": "^4.1.0",
+        "react-redux": "^7.1.0",
+        "react-spinners-kit": "^1.9.0",
+        "redux": "^4.0.1",
+        "redux-thunk": "^2.3.0",
+        "rel-events": "^0.3.3"
     }
 }
