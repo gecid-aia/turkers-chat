@@ -1,0 +1,55 @@
+#chat-react {
+  height: 100vh;
+  width: 100vw;
+}
+
+#collective-chat {
+  width: 32em;
+  height: 32em;
+  position: absolute;
+  right: 2em;
+  top: 2em;
+
+  &.collapsed { height: auto; }
+}
+
+.chat-box {
+  border: 3px solid black;
+  padding: 1em;
+  position: relative;
+
+  .header {
+    .hide-chat {
+      width: 1em;
+      height: 1em;
+      font-weight: bold;
+      float: right;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+
+  .messages {
+    max-height: 22em;
+    height: 22em;
+    overflow-y: scroll;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+
+    .message {
+      margin: 0.8em 0 0;
+
+      .sender {
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .separator {
+    border-top: 3px solid black;
+    margin: 0.8em 0;
+  }
+}

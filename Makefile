@@ -5,7 +5,7 @@ run_frontend:
 	npm start
 
 run_django:
-	python project/manage.py runserver
+	python turkers/manage.py runserver
 
-dev:
+run:
 	make -j2 run_django run_frontend
