@@ -47,6 +47,7 @@ THIRDY_PARTY_LIBS = [
     'naomi',
     'rest_framework',
     'rest_framework_swagger',
+    'webpack_loader',
 ]
 
 PROJ_APPS = [
@@ -159,6 +160,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
+}
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
 }
 
 
