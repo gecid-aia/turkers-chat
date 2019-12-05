@@ -17,11 +17,9 @@ class ChatTests(TestCase):
     def test_cannot_create_chat_for_regular_user(self):
         assert Chat.objects.get_collective_chat()  # created by initial migration
 
-        chat = Chat(turker=self.turker, info='turker bio')
-        chat.save()
+        chat = self.turker.chat
         assert chat.id
         assert chat.title == self.turker.username
-        assert chat == Chat.objects.get_turker_chat(self.turker.id)
 
         regular_user = baker.make(User, user_type=USER_TYPE.RG.value)
         chat = Chat(turker=regular_user)
@@ -69,14 +67,12 @@ class MessageSerializerTests(TestCase):
 
     def test_serialize_turker_user_message(self):
         user = baker.make(User, user_type=USER_TYPE.TK.value)
-        self.chat.turker = user
-        self.chat.save()
-        msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
+        msg = baker.make(Message, sender=user, content='xpto', chat=user.chat)
 
         expected = {
             'sender_username': user.username,
             'content': 'xpto',
-            'turker_chat_url': reverse('chats_api:chat', args=[self.chat.id]),
+            'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
         }
         serializer = MessageSerializer(instance=msg)
 
@@ -104,7 +100,7 @@ class ChatEndpointTests(TestCase):
     def setUp(self):
         user = baker.make(User, user_type=USER_TYPE.TK.value)
         self.client.force_login(user)
-        self.chat = baker.make(Chat, turker=user)
+        self.chat = user.chat
         self.url = reverse('chats_api:chat', args=[self.chat.id])
 
     def test_login_required(self):
@@ -205,9 +201,9 @@ class ListUserAvailableChatsTests(TestCase):
         assert 403 == response.status_code
 
     def test_get_available_chats_for_regular_user(self):
-        turkers_chat = baker.make(
-            Chat, turker__user_type=USER_TYPE.TK.value, _quantity=5
-        )
+        turkers_chat = [t.chat for t in baker.make(
+            User, user_type=USER_TYPE.TK.value, _quantity=5
+        )]
         response = self.client.get(self.url)
         expected = ChatSerializer(instance=Chat.objects.all(), many=True).data
         data = response.json()
@@ -218,7 +214,8 @@ class ListUserAvailableChatsTests(TestCase):
     def test_get_available_chats_for_turker_user(self):
         self.user.user_type = USER_TYPE.TK.value
         self.user.save()
-        baker.make(Chat, turker__user_type=USER_TYPE.TK.value, _quantity=5)
+        # other turkers
+        baker.make(User, user_type=USER_TYPE.TK.value, _quantity=5)
         turker_chat = baker.make(Chat, turker=self.user)
         collective = Chat.objects.get_collective_chat()
 

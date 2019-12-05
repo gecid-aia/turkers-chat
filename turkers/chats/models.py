@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 
 from users.models import User
@@ -63,3 +65,9 @@ class Message(models.Model):
         if not self.sender or self.sender.is_regular:
             return ''
         return reverse('chats_api:chat', args=[self.sender.chat.id])
+
+
+@receiver(post_save, sender=User)
+def create_turker_chat(sender, instance, created, *args, **kwargs):
+    if created and instance.is_turker:
+        Chat.objects.create(turker=instance)
