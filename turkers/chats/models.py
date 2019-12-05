@@ -16,7 +16,7 @@ class ChatManager(models.Manager):
 class Chat(models.Model):
     objects = ChatManager()
 
-    turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.PROTECT)
+    turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.CASCADE)
     info = models.TextField(default='')
 
     def save(self, *args, **kwargs):
