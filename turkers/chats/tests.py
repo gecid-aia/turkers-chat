@@ -12,7 +12,7 @@ from users.models import User, USER_TYPE
 class ChatTests(TestCase):
 
     def setUp(self):
-        self.turker = baker.make(User, user_type=USER_TYPE.TK)
+        self.turker = baker.make(User, user_type=USER_TYPE.TK.value)
 
     def test_cannot_create_chat_for_regular_user(self):
         assert Chat.objects.get_collective_chat()  # created by initial migration
@@ -23,7 +23,7 @@ class ChatTests(TestCase):
         assert chat.title == self.turker.username
         assert chat == Chat.objects.get_turker_chat(self.turker.id)
 
-        regular_user = baker.make(User, user_type=USER_TYPE.RG)
+        regular_user = baker.make(User, user_type=USER_TYPE.RG.value)
         chat = Chat(turker=regular_user)
 
         with pytest.raises(ValueError):
@@ -40,7 +40,7 @@ class MessageSerializerTests(TestCase):
         self.chat = Chat.objects.get_collective_chat()
 
     def test_serialize_regular_user_message(self):
-        user = baker.make(User, user_type=USER_TYPE.RG)
+        user = baker.make(User, user_type=USER_TYPE.RG.value)
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
 
         expected = {
@@ -53,7 +53,7 @@ class MessageSerializerTests(TestCase):
         assert expected == serializer.data
 
     def test_serialize_message_for_deleted_user(self):
-        user = baker.make(User, user_type=USER_TYPE.RG)
+        user = baker.make(User, user_type=USER_TYPE.RG.value)
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
         user.delete()
         msg.refresh_from_db()
@@ -68,7 +68,7 @@ class MessageSerializerTests(TestCase):
         assert expected == serializer.data
 
     def test_serialize_turker_user_message(self):
-        user = baker.make(User, user_type=USER_TYPE.TK)
+        user = baker.make(User, user_type=USER_TYPE.TK.value)
         self.chat.turker = user
         self.chat.save()
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
@@ -102,7 +102,7 @@ class ChatSerializerTests(TestCase):
 class ChatEndpointTests(TestCase):
 
     def setUp(self):
-        user = baker.make(User, user_type=USER_TYPE.TK)
+        user = baker.make(User, user_type=USER_TYPE.TK.value)
         self.client.force_login(user)
         self.chat = baker.make(Chat, turker=user)
         self.url = reverse('chats_api:chat', args=[self.chat.id])

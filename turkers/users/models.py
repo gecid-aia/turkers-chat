@@ -8,12 +8,12 @@ class USER_TYPE(Enum):
     TK = 'TK'
 
 class User(AbstractUser):
-    user_type = models.CharField(max_length=2, choices=USER_TYPE, blank=False, null=False, default=USER_TYPE.RG)
+    user_type = models.CharField(max_length=2, choices=[(t, t.value) for t in USER_TYPE], blank=False, null=False, default=USER_TYPE.RG.value)
 
     @property
     def is_regular(self):
-        return self.user_type == USER_TYPE.RG
+        return self.user_type == USER_TYPE.RG.value
 
     @property
     def is_turker(self):
-        return self.user_type == USER_TYPE.TK
+        return self.user_type == USER_TYPE.TK.value
