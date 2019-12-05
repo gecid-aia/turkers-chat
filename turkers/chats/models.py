@@ -31,10 +31,12 @@ class Chat(models.Model):
         return super().save(*args, **kwargs)
 
     @property
+    def is_collective(self):
+        return not self.turker_id
+
+    @property
     def title(self):
-        if not self.turker_id:
-            return "Collective Chat"
-        return self.turker.username
+        return "Collective Chat" if self.is_collective else self.turker.username
 
     @property
     def messages_url(self):
@@ -60,4 +62,4 @@ class Message(models.Model):
     def turker_chat_url(self):
         if not self.sender or self.sender.is_regular:
             return ''
-        return reverse('chats_api:turker', args=[self.sender.id])
+        return reverse('chats_api:chat', args=[self.sender.chat.id])

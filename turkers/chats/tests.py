@@ -6,13 +6,13 @@ from django.urls import reverse
 
 from chats.models import Chat, Message
 from chats.serializers import MessageSerializer, ChatSerializer
-from users.models import User
+from users.models import User, USER_TYPE
 
 
 class ChatTests(TestCase):
 
     def setUp(self):
-        self.turker = baker.make(User, user_type=User.TK)
+        self.turker = baker.make(User, user_type=USER_TYPE.TK)
 
     def test_cannot_create_chat_for_regular_user(self):
         assert Chat.objects.get_collective_chat()  # created by initial migration
@@ -23,7 +23,7 @@ class ChatTests(TestCase):
         assert chat.title == self.turker.username
         assert chat == Chat.objects.get_turker_chat(self.turker.id)
 
-        regular_user = baker.make(User, user_type=User.RG)
+        regular_user = baker.make(User, user_type=USER_TYPE.RG)
         chat = Chat(turker=regular_user)
 
         with pytest.raises(ValueError):
@@ -40,7 +40,7 @@ class MessageSerializerTests(TestCase):
         self.chat = Chat.objects.get_collective_chat()
 
     def test_serialize_regular_user_message(self):
-        user = baker.make(User, user_type=User.RG)
+        user = baker.make(User, user_type=USER_TYPE.RG)
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
 
         expected = {
@@ -53,7 +53,7 @@ class MessageSerializerTests(TestCase):
         assert expected == serializer.data
 
     def test_serialize_message_for_deleted_user(self):
-        user = baker.make(User, user_type=User.RG)
+        user = baker.make(User, user_type=USER_TYPE.RG)
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
         user.delete()
         msg.refresh_from_db()
@@ -68,13 +68,15 @@ class MessageSerializerTests(TestCase):
         assert expected == serializer.data
 
     def test_serialize_turker_user_message(self):
-        user = baker.make(User, user_type=User.TK)
+        user = baker.make(User, user_type=USER_TYPE.TK)
+        self.chat.turker = user
+        self.chat.save()
         msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
 
         expected = {
             'sender_username': user.username,
             'content': 'xpto',
-            'turker_chat_url': reverse('chats_api:turker', args=[user.id]),
+            'turker_chat_url': reverse('chats_api:chat', args=[self.chat.id]),
         }
         serializer = MessageSerializer(instance=msg)
 
@@ -90,49 +92,20 @@ class ChatSerializerTests(TestCase):
             'title': 'Collective Chat',
             'info': '',
             'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
+            'is_collective': True
         }
         serializer = ChatSerializer(instance=chat)
 
         assert expected == serializer.data
 
 
-class CollectiveChatEndpointTests(TestCase):
+class ChatEndpointTests(TestCase):
 
     def setUp(self):
-        user = baker.make(User)
-        self.client.force_login(user)
-        self.chat = Chat.objects.get_collective_chat()
-        self.url = reverse('chats_api:collective')
-
-    def test_login_required(self):
-        self.client.logout()
-
-        response = self.client.get(self.url)
-
-        assert 403 == response.status_code
-
-    def test_get_chat_data(self):
-        response = self.client.get(self.url)
-        expected = ChatSerializer(instance=self.chat).data
-
-        assert 200 == response.status_code
-        assert expected == response.json()
-
-    def test_404_if_chat_is_deleted(self):
-        self.chat.delete()
-
-        response = self.client.get(self.url)
-
-        assert 404 == response.status_code
-
-
-class TurkerChatEndpointTests(TestCase):
-
-    def setUp(self):
-        user = baker.make(User, user_type=User.TK)
+        user = baker.make(User, user_type=USER_TYPE.TK)
         self.client.force_login(user)
         self.chat = baker.make(Chat, turker=user)
-        self.url = reverse('chats_api:turker', args=[user.id])
+        self.url = reverse('chats_api:chat', args=[self.chat.id])
 
     def test_login_required(self):
         self.client.logout()
@@ -149,7 +122,7 @@ class TurkerChatEndpointTests(TestCase):
         assert expected == response.json()
 
     def test_404_if_chat_does_not_exist(self):
-        self.url = reverse('chats_api:turker', args=[1000])
+        self.url = reverse('chats_api:chat', args=[1000])
 
         response = self.client.get(self.url)
 
