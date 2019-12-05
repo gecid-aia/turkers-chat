@@ -188,3 +188,43 @@ class ListChatMessagesEndpointTests(TestCase):
         self.url = reverse('chats_api:chat_messages', args=[1000])
         response = self.client.post(self.url, data={'content': 'new msg'})
         assert 404 == response.status_code
+
+
+class ListUserAvailableChatsTests(TestCase):
+
+    def setUp(self):
+        self.user = baker.make(User, user_type=USER_TYPE.RG.value)
+        self.client.force_login(self.user)
+        self.url = reverse('chats_api:chats_index')
+
+    def test_login_required(self):
+        self.client.logout()
+
+        response = self.client.get(self.url)
+
+        assert 403 == response.status_code
+
+    def test_get_available_chats_for_regular_user(self):
+        turkers_chat = baker.make(
+            Chat, turker__user_type=USER_TYPE.TK.value, _quantity=5
+        )
+        response = self.client.get(self.url)
+        expected = ChatSerializer(instance=Chat.objects.all(), many=True).data
+        data = response.json()
+
+        assert 200 == response.status_code
+        assert expected == data['results']
+
+    def test_get_available_chats_for_turker_user(self):
+        self.user.user_type = USER_TYPE.TK.value
+        self.user.save()
+        baker.make(Chat, turker__user_type=USER_TYPE.TK.value, _quantity=5)
+        turker_chat = baker.make(Chat, turker=self.user)
+        collective = Chat.objects.get_collective_chat()
+
+        expected = ChatSerializer(instance=[collective, turker_chat], many=True).data
+        response = self.client.get(self.url)
+        data = response.json()
+
+        assert 200 == response.status_code
+        assert expected == data['results']

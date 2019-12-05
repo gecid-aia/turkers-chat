@@ -34,3 +34,17 @@ class ListChatMessagesEndpoint(ListAPIView):
             content=content
         )
         return Response(self.serializer_class(instance=new_msg).data, status=201)
+
+
+class UserAvailableChatsEndpoint(ListAPIView):
+    serializer_class = ChatSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_regular:
+            return Chat.objects.all()
+        elif user.is_turker:
+            return [
+                Chat.objects.get_collective_chat(),
+                Chat.objects.get_turker_chat(user.id)
+            ]
