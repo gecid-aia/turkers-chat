@@ -44,6 +44,9 @@ class Chat(models.Model):
     def messages_url(self):
         return reverse('chats_api:chat_messages', args=[self.id])
 
+    def __str__(self):
+        return self.title
+
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
