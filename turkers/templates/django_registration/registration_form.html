@@ -5,6 +5,8 @@
 <form action="." method="POST">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <p><b>Google Captcha Here!</b></p>
     <input type="submit" value="Register">
 </form>
 
