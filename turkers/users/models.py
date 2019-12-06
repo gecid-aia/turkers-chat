@@ -9,7 +9,7 @@ class USER_TYPE(Enum):
     TK = 'TK'
 
 class User(AbstractUser):
-    user_type = models.CharField(max_length=2, choices=[(t, t.value) for t in USER_TYPE], blank=False, null=False, default=USER_TYPE.RG.value)
+    user_type = models.CharField(max_length=2, choices=[(t.value, t.name) for t in USER_TYPE], blank=False, null=False, default=USER_TYPE.RG.value)
 
     @property
     def is_regular(self):
