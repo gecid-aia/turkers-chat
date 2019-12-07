@@ -44,6 +44,7 @@ class MessageSerializerTests(TestCase):
         expected = {
             'sender_username': user.username,
             'content': 'xpto',
+            'id': msg.id,
             'turker_chat_url': '',
         }
         serializer = MessageSerializer(instance=msg)
@@ -59,6 +60,7 @@ class MessageSerializerTests(TestCase):
         expected = {
             'sender_username': 'Anonymous',
             'content': 'xpto',
+            'id': msg.id,
             'turker_chat_url': '',
         }
         serializer = MessageSerializer(instance=msg)
@@ -72,6 +74,7 @@ class MessageSerializerTests(TestCase):
         expected = {
             'sender_username': user.username,
             'content': 'xpto',
+            'id': msg.id,
             'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
         }
         serializer = MessageSerializer(instance=msg)
@@ -87,6 +90,7 @@ class ChatSerializerTests(TestCase):
         expected = {
             'title': 'Collective Chat',
             'info': '',
+            'id': chat.id,
             'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
             'is_collective': True
         }
