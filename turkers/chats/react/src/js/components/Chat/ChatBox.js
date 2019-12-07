@@ -1,23 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
 
-import Messages from '../Chat/Messages';
-import MessageInput from '../Chat/MessageInput';
+import Messages from './Messages';
+import MessageInput from './MessageInput';
 
-export default class CollectiveChat extends React.Component {
+export default class ChatBox extends React.Component {
+  static propTypes = {
+    messagesUrl: PropTypes.string.isRequired,
+    chatTitle: PropTypes.string.isRequired,
+    chatIsCollective: PropTypes.bool.isRequired,
+  }
+
   state = { showChat: true }
 
   _toggleChat = () => this.setState({ showChat: !this.state.showChat });
 
   render(){
     const { showChat } = this.state;
+    const { messagesUrl, chatTitle, chatIsCollective } = this.props;
 
     return (
       <Draggable handle=".header" bounds="parent">
-        <div id="collective-chat" className={"chat-box" + (showChat ? '' : ' collapsed')}>
+        <div id={chatIsCollective ? "collective-chat" : ''} className={"chat-box" + (showChat ? '' : ' collapsed')}>
 
           <div className="header">
-            <strong>CONVERSA COLETIVA</strong>
+            <strong>{chatTitle.toUpperCase()}</strong>
             <div className="hide-chat" onClick={this._toggleChat}>
               {showChat ? '—' : '|'}
             </div>
@@ -27,10 +35,10 @@ export default class CollectiveChat extends React.Component {
             <React.Fragment>
 
               <div className="separator"></div>
-              <Messages />
+              <Messages messagesUrl={messagesUrl} />
               <div className="separator"></div>
 
-              <MessageInput />
+              <MessageInput messagesUrl={messagesUrl} />
             </React.Fragment>
           ) : null}
         </div>

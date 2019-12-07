@@ -5,18 +5,20 @@
 
 #collective-chat {
   width: 32em;
-  height: 32em;
   position: absolute;
   right: 2em;
   top: 2em;
-
-  &.collapsed { height: auto; }
 }
 
 .chat-box {
   border: 3px solid black;
+  background-color: white;
   padding: 1em;
+  width: 24em;
+  height: 32em;
   position: relative;
+
+  &.collapsed { height: auto; }
 
   .header {
     .hide-chat {

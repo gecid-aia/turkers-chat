@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from "redux";
 import { eventsMiddleware } from "rel-events";
 
 import rootReducer from "./rootReducer";
-import CollectiveChat from "./components/CollectiveChat";
+import ChatsPage from "./components/Chat/";
 
 import "whatwg-fetch";
 import "../scss/index.scss";
@@ -18,7 +18,7 @@ const store = createStore(
 
 class App extends React.Component {
   render() {
-    return <Provider store={store}><CollectiveChat /></Provider>;
+    return <Provider store={store}><ChatsPage /></Provider>;
   }
 }
 
