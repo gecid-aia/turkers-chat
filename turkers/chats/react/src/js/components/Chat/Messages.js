@@ -6,8 +6,8 @@ import { GetChatMessagesEvent } from '../../events';
 
 class Messages extends React.Component {
   static propTypes = {
-    messagesUrl: PropTypes.string.isRequired,
-    results: PropTypes.object.isRequired,
+    chatId: PropTypes.number.isRequired,
+    chats: PropTypes.object.isRequired,
   }
 
   constructor(props){
@@ -17,15 +17,20 @@ class Messages extends React.Component {
   }
 
   componentDidMount() {
-    const { messagesUrl } = this.props;
-    this.props.getChatMessages({ messagesUrl });
+    const { messagesUrl, chatId } = this.props;
+    this.props.getChatMessages({ messagesUrl, chatId });
     this.setState({
-      scheduler: setInterval(() => this.props.getChatMessages({ messagesUrl }), 2000)
+      scheduler: setInterval(() => this.props.getChatMessages({ messagesUrl, chatId }), 2000)
     });
   }
 
-  componentDidUpdate({ results }) {
-    if (!_isEqual(results[this.props.messagesUrl], this.props.results[this.props.messagesUrl])){
+  componentDidUpdate(prevProps) {
+    const { chatId } = this.props;
+    const isFirstMeaningfulRender = prevProps.chats[chatId] && !prevProps.chats[chatId].results.length && this.props.chats[chatId].results.length;
+    const boxSize = this.messagesBox.current.clientHeight
+    const scrollDifference = this.messagesBox.current.scrollHeight - (boxSize + this.messagesBox.current.scrollTop);
+
+    if (isFirstMeaningfulRender || scrollDifference <= boxSize){
       this.messagesBox.current.scrollTop = this.messagesBox.current.scrollHeight;
     }
   }
@@ -34,11 +39,23 @@ class Messages extends React.Component {
     this.setState({ scheduler: null });
   }
 
+  getNextPage = () => {
+    this.props.getChatMessages({
+      messagesUrl: this.props.chats[this.props.chatId].nextPage,
+      chatId: this.props.chatId,
+    });
+  }
+
   render(){
-    const { results, messagesUrl } = this.props;
+    const { chats, chatId } = this.props;
     return (
       <div className="messages" ref={this.messagesBox}>
-        {results[messagesUrl] && results[messagesUrl].map((message, i) => (
+        {chats[chatId] && chats[chatId].nextPage ? (
+          <div className="next-page-section" onClick={this.getNextPage}>
+            <h1>Próxima página</h1>
+          </div>
+        ) : null}
+        {chats[chatId] && chats[chatId].results && chats[chatId].results.map((message, i) => (
           <div className="message" key={i}>
             <p className="sender">{message.sender_username}: </p>
             <p className="content">{message.content}</p>
@@ -51,5 +68,5 @@ class Messages extends React.Component {
 
 export default GetChatMessagesEvent.register({
   Component: Messages,
-  props: ['results']
+  props: ['chats']
 });
