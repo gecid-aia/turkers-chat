@@ -21,6 +21,8 @@
   &.collapsed { height: auto; }
 
   .header {
+    cursor: pointer;
+
     .hide-chat {
       width: 1em;
       height: 1em;
@@ -29,6 +31,14 @@
       cursor: pointer;
       text-align: center;
     }
+  }
+
+  .next-page-section {
+    text-align: center;
+    cursor: pointer;
+    padding: 0.6em;
+    margin: 0 auto 0.6em;
+    border-bottom: 1px solid black;
   }
 
   .messages {

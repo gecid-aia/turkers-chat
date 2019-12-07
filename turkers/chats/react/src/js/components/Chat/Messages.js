@@ -52,7 +52,7 @@ class Messages extends React.Component {
       <div className="messages" ref={this.messagesBox}>
         {chats[chatId] && chats[chatId].nextPage ? (
           <div className="next-page-section" onClick={this.getNextPage}>
-            <h1>Próxima página</h1>
+            <p>Ver mensagens antigas</p>
           </div>
         ) : null}
         {chats[chatId] && chats[chatId].results && chats[chatId].results.map((message, i) => (
