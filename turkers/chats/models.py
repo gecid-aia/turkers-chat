@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 
 from users.models import User
@@ -16,7 +18,7 @@ class ChatManager(models.Manager):
 class Chat(models.Model):
     objects = ChatManager()
 
-    turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.PROTECT)
+    turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.CASCADE)
     info = models.TextField(default='')
 
     def save(self, *args, **kwargs):
@@ -31,14 +33,19 @@ class Chat(models.Model):
         return super().save(*args, **kwargs)
 
     @property
+    def is_collective(self):
+        return not self.turker_id
+
+    @property
     def title(self):
-        if not self.turker_id:
-            return "Collective Chat"
-        return self.turker.username
+        return "Collective Chat" if self.is_collective else self.turker.username
 
     @property
     def messages_url(self):
         return reverse('chats_api:chat_messages', args=[self.id])
+
+    def __str__(self):
+        return self.title
 
 
 class Message(models.Model):
@@ -60,4 +67,10 @@ class Message(models.Model):
     def turker_chat_url(self):
         if not self.sender or self.sender.is_regular:
             return ''
-        return reverse('chats_api:turker', args=[self.sender.id])
+        return reverse('chats_api:chat', args=[self.sender.chat.id])
+
+
+@receiver(post_save, sender=User)
+def create_turker_chat(sender, instance, created, *args, **kwargs):
+    if created and instance.is_turker:
+        Chat.objects.create(turker=instance)

@@ -14,4 +14,4 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ['title', 'info', 'messages_url']
+        fields = ['title', 'info', 'messages_url', 'is_collective']
