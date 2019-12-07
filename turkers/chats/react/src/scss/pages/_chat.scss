@@ -37,8 +37,8 @@
     overflow-y: scroll;
     display: -webkit-flex;
     display: flex;
-    -webkit-flex-flow: column-reverse nowrap;
-    flex-flow: column-reverse nowrap;
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column nowrap;
 
     .message {
       margin: 0.8em 0 0;
