@@ -153,7 +153,7 @@ class ListChatMessagesEndpointTests(TestCase):
         response = self.client.get(self.url)
         data = response.json()
 
-        expected = MessageSerializer(instance=messages[:20], many=True).data
+        expected = MessageSerializer(instance=messages[::-1][:20], many=True).data
         assert 200 == response.status_code
         assert expected == data['results']
         assert 42 == data['count']
