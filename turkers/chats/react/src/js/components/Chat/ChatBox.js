@@ -7,6 +7,7 @@ import MessageInput from './MessageInput';
 
 export default class ChatBox extends React.Component {
   static propTypes = {
+    chatId: PropTypes.number.isRequired,
     messagesUrl: PropTypes.string.isRequired,
     chatTitle: PropTypes.string.isRequired,
     chatIsCollective: PropTypes.bool.isRequired,
@@ -18,7 +19,7 @@ export default class ChatBox extends React.Component {
 
   render(){
     const { showChat } = this.state;
-    const { messagesUrl, chatTitle, chatIsCollective } = this.props;
+    const { messagesUrl, chatId, chatTitle, chatIsCollective } = this.props;
 
     return (
       <Draggable handle=".header" bounds="parent">
@@ -35,7 +36,7 @@ export default class ChatBox extends React.Component {
             <React.Fragment>
 
               <div className="separator"></div>
-              <Messages messagesUrl={messagesUrl} />
+              <Messages messagesUrl={messagesUrl} chatId={chatId} />
               <div className="separator"></div>
 
               <MessageInput messagesUrl={messagesUrl} />

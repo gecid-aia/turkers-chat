@@ -8,7 +8,12 @@ class ChatsPage extends React.Component {
 
   render(){
     return this.props.chats.map((chat) => (
-      <ChatBox messagesUrl={chat.messages_url} chatTitle={chat.title} chatIsCollective={chat.is_collective} />
+      <ChatBox
+        messagesUrl={chat.messages_url}
+        chatTitle={chat.title}
+        chatId={chat.id}
+        chatIsCollective={chat.is_collective}
+      />
     ));
   }
 }
