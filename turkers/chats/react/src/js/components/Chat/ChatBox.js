@@ -22,7 +22,14 @@ export default class ChatBox extends React.Component {
     const { messagesUrl, chatId, chatTitle, chatIsCollective } = this.props;
 
     return (
-      <Draggable handle=".header" bounds="parent">
+      <Draggable
+        handle=".header"
+        bounds="parent"
+        defaultPosition={{
+          x: chatIsCollective ? 0 : window.innerWidth / 2 * Math.random(),
+          y: chatIsCollective ? 0 : window.innerHeight / 2 * Math.random()
+      }}
+      >
         <div id={chatIsCollective ? "collective-chat" : ''} className={"chat-box" + (showChat ? '' : ' collapsed')}>
 
           <div className="header">
