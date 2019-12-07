@@ -13,7 +13,10 @@ export default class ChatBox extends React.Component {
     chatIsCollective: PropTypes.bool.isRequired,
   }
 
-  state = { showChat: true }
+  constructor(props){
+    super(props);
+    this.state = { showChat: props.chatIsCollective }
+  }
 
   _toggleChat = () => this.setState({ showChat: !this.state.showChat });
 
