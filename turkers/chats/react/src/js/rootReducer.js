@@ -2,10 +2,15 @@ import { combineReducers } from "redux";
 import { combineEventReducers } from "rel-events";
 
 import {
-  GetCollectiveChatMessagesEvent,
-  SendMessageEvent
-} from "./components/CollectiveChat/events";
+  GetChatMessagesEvent,
+  SendMessageEvent,
+  GetChatsEvent
+} from "./events";
 
 export default combineReducers({
-  ...combineEventReducers([GetCollectiveChatMessagesEvent, SendMessageEvent])
+  ...combineEventReducers([
+    GetChatMessagesEvent,
+    SendMessageEvent,
+    GetChatsEvent
+  ])
 });

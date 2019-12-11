@@ -5,20 +5,24 @@
 
 #collective-chat {
   width: 32em;
-  height: 32em;
   position: absolute;
   right: 2em;
   top: 2em;
-
-  &.collapsed { height: auto; }
 }
 
 .chat-box {
   border: 3px solid black;
+  background-color: white;
   padding: 1em;
-  position: relative;
+  width: 24em;
+  height: 32em;
+  position: absolute;
+
+  &.collapsed { height: auto; }
 
   .header {
+    cursor: pointer;
+
     .hide-chat {
       width: 1em;
       height: 1em;
@@ -27,6 +31,14 @@
       cursor: pointer;
       text-align: center;
     }
+  }
+
+  .next-page-section {
+    text-align: center;
+    cursor: pointer;
+    padding: 0.6em;
+    margin: 0 auto 0.6em;
+    border-bottom: 1px solid black;
   }
 
   .messages {

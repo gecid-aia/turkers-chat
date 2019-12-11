@@ -55,7 +55,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['timestamp']
+        ordering = ['-timestamp']
 
     @property
     def sender_username(self):

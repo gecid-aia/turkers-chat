@@ -7,11 +7,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['sender_username', 'content', 'turker_chat_url']
+        fields = ['sender_username', 'content', 'turker_chat_url', 'id']
 
 
 class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ['title', 'info', 'messages_url', 'is_collective']
+        fields = ['title', 'info', 'is_collective', 'messages_url', 'id']

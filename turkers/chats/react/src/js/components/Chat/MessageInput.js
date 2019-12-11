@@ -1,8 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { SendMessageEvent } from '../CollectiveChat/events';
+import { SendMessageEvent } from '../../events';
 
 class MessageInput extends React.Component {
+  static propTypes = {
+    messagesUrl: PropTypes.string.isRequired,
+  }
+
   state = { message: '' }
 
   _handleMessageTyping = e => {
@@ -12,8 +17,9 @@ class MessageInput extends React.Component {
   _handleKeyDown = e => {
     if (e.key === 'Enter') {
       const { message }= this.state;
+      const { messagesUrl }= this.props;
       this.setState({ message: '' }, () => {
-        this.props.sendMessage({ chatId: 1, message });
+        this.props.sendMessage({ messagesUrl, message });
       })
     }
   }
