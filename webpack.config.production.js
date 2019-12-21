@@ -2,6 +2,7 @@ var path = require("path");
 var webpack = require("webpack");
 var BundleTracker = require("webpack-bundle-tracker");
 var ExtractText = require("extract-text-webpack-plugin");
+var CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: ["./turkers/chats/react/src/js/index"],
@@ -37,7 +38,8 @@ module.exports = {
     }),
     new ExtractText({
       filename: "[name]-[hash].css"
-    })
+    }),
+    new CompressionPlugin()
   ],
   resolve: {
     modules: ["node_modules"],
