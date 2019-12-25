@@ -2,13 +2,14 @@ var path = require("path");
 var webpack = require("webpack");
 var BundleTracker = require("webpack-bundle-tracker");
 var ExtractText = require("extract-text-webpack-plugin");
+var CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: ["./turkers/chats/react/src/js/index"],
   output: {
-    path: path.resolve("./turkers/chats/react/bundles/"),
+    path: path.resolve("./turkers/chats/static/chats/dist/"),
     filename: "[name]-[hash].js",
-    publicPath: "/static/chats/react/bundles/" // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
+    publicPath: "/static/chats/dist/" // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
   },
   module: {
     rules: [
@@ -33,11 +34,12 @@ module.exports = {
   plugins: [
     new BundleTracker({
       path: __dirname,
-      filename: "project/webpack-stats.json"
+      filename: "turkers/webpack-stats.json"
     }),
     new ExtractText({
       filename: "[name]-[hash].css"
-    })
+    }),
+    new CompressionPlugin()
   ],
   resolve: {
     modules: ["node_modules"],
