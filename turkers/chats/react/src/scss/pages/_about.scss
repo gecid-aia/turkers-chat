@@ -1,0 +1,20 @@
+#about-text {
+  position: relative;
+  width: 50%;
+  height: 70%;
+  top: 15%;
+  margin: 0 auto;
+
+  p { line-height: 1.8; margin-bottom: 1rem; }
+  .title { float: left; font-size: 3rem; padding: 1rem 0; }
+}
+
+@media (max-width: 1400px) {
+  #about-text {
+    display: block;
+    overflow-y: scroll;
+    position: absolute;
+    left: 5%;
+    width: 90%;
+  }
+}
