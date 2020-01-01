@@ -2,12 +2,6 @@
 {% load static %}
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <title> Exchange w/ Turker </title>
-        <link href="https://unpkg.com/basscss@8.0.2/css/basscss.min.css" rel="stylesheet">
-        <link href="../static/about.css" rel="stylesheet">
-        {% render_bundle "main" "css" %}
-    </head>
     <body>
         <nav class="bold header-text"><p class="bold">Exchange w/ Turker</p></nav>
 
@@ -15,6 +9,13 @@
         {% block content %}
         {% endblock %}
         </div>
+<head>
+  <title> Exchanges w/ Turkers </title>
+  <link href="https://unpkg.com/basscss@8.0.2/css/basscss.min.css" rel="stylesheet">
+  <link href="../static/about.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.typotheque.com/WF-031670-010387.css" type="text/css" />
+  {% render_bundle "main" "css" %}
+</head>
 
         <footer class="bold">
             {% if request.user.is_authenticated %}
