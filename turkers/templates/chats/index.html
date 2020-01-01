@@ -2,6 +2,9 @@
 {% load render_bundle from webpack_loader %}
 
 {% block content %}
+<a id="login-link" class="bold" href="/login/">EXCHANGES w/ <span class="underline">Turkers</span></a>
+<a id="about-link" class="bold" href="/about/">About</a>
+<p id="user-info">Your are logged in as <span class="underline bold">{{ request.user.username }}</span></p>
 <div id="chat-react"></div>
 {% render_bundle "main" "js" %}
 {% endblock %}
