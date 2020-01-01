@@ -34,7 +34,7 @@ urlpatterns = [
     path(r'', include('django_registration.backends.one_step.urls')),
     path(r'', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('sobre/', AboutView.as_view(), name='sobre'),
+    path('about/', AboutView.as_view(), name='about'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
