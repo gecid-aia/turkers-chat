@@ -1,0 +1,42 @@
+
+.m5  { margin: 5rem; }
+.mx5 { margin-left: 5rem; margin-right: 5rem; }
+.my5 { margin-top: 5rem; margin-bottom: 5rem; }
+.mt5 { margin-top: 5rem; }
+.mr5 { margin-right: 5rem; }
+.mb5 { margin-bottom: 5rem; }
+.ml5 { margin-left: 5rem; }
+
+.m6  { margin: 6rem; }
+.mx6 { margin-left: 6rem; margin-right: 6rem; }
+.my6 { margin-top: 6rem; margin-bottom: 6rem; }
+.mt6 { margin-top: 6rem; }
+.mr6 { margin-right: 6rem; }
+.mb6 { margin-bottom: 6rem; }
+.ml6 { margin-left: 6rem; }
+
+.m7  { margin: 7rem; }
+.mx7 { margin-left: 7rem; margin-right: 7rem; }
+.my7 { margin-top: 7rem; margin-bottom: 7rem; }
+.mt7 { margin-top: 7rem; }
+.mr7 { margin-right: 7rem; }
+.mb7 { margin-bottom: 7rem; }
+.ml7 { margin-left: 7rem; }
+
+.m8  { margin: 8rem; }
+.mx8 { margin-left: 8rem; margin-right: 8rem; }
+.my8 { margin-top: 8rem; margin-bottom: 8rem; }
+.mt8 { margin-top: 8rem; }
+.mr8 { margin-right: 8rem; }
+.mb8 { margin-bottom: 8rem; }
+.ml8 { margin-left: 8rem; }
+
+.inverted {
+  filter: invert(100%);
+}
+
+.vertically-aligned {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
