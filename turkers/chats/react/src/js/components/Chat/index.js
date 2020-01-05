@@ -4,14 +4,15 @@ import ChatBox from './ChatBox';
 import { GetChatsEvent } from '../../events';
 
 class ChatsPage extends React.Component {
-  componentDidMount(){ this.props.getChats(); }
+  componentDidMount() { this.props.getChats(); }
 
-  render(){
+  render() {
     return this.props.chats.map((chat) => (
       <ChatBox
         messagesUrl={chat.messages_url}
         chatTitle={chat.title}
         chatId={chat.id}
+        chatInfo={chat.info}
         chatIsCollective={chat.is_collective}
       />
     ));

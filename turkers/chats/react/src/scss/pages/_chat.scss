@@ -20,16 +20,24 @@
 
   &.collapsed { height: auto; }
 
+  .return-to-chat-link {
+    position: absolute;
+    bottom: 0;
+    padding: 1rem 0;
+    font-weight: bold;
+  }
+
   .header {
     cursor: pointer;
 
-    .hide-chat {
-      width: 1em;
+    .chat-controls {
       height: 1em;
       font-weight: bold;
       float: right;
       cursor: pointer;
       text-align: center;
+
+      span { padding: 0 0.4rem; }
     }
   }
 

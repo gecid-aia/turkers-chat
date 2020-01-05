@@ -1,5 +1,7 @@
+@import "pages/about";
 @import "pages/chat";
 @import "pages/login";
+@import "pages/shared";
 @import "utility";
 
 * {
@@ -14,6 +16,8 @@ h1, h2, h3, h4, h5, h6, b, strong, b, .bold {
   font-stretch: normal;
   font-variant: normal;
 }
+
+a { text-decoration: none; color: black; }
 
 input {
   border: 3px solid black;

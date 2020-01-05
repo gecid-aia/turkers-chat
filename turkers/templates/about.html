@@ -1,21 +1,25 @@
 {% extends 'base.html'%}
 {% block content %}
-<div class="max-width-4 mx-auto">
-    <div class="clearfix">
-        <div class="sm-col">
-            <nav class="bold header-text">Return to Chats</nav>
-                <h1 class="bold">About</h1>
-                <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar neque laoreet suspendisse interdum consectetur. Ut diam quam nulla porttitor massa id neque. Augue lacus viverra vitae congue eu consequat ac. Fermentum dui faucibus in ornare quam viverra. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Nunc scelerisque viverra mauris in aliquam sem fringilla. Dui ut ornare lectus sit amet est placerat in. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Sodales neque sodales ut etiam sit amet nisl purus. Cursus turpis massa tincidunt dui ut ornare lectus sit amet. Porttitor rhoncus dolor purus non enim praesent. Arcu ac tortor dignissim convallis. Ullamcorper sit amet risus nullam. Integer quis auctor elit sed vulputate mi sit.
-                        Urna cursus eget nunc scelerisque. Pharetra sit amet aliquam id diam maecenas ultricies mi. Nec ullamcorper sit amet risus nullam eget felis eget nunc. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Massa sed elementum tempus egestas. At elementum eu facilisis sed odio morbi quis commodo odio. Sed augue lacus viverra vitae congue. Viverra aliquet eget sit amet. Quis eleifend quam adipiscing vitae. Ultrices tincidunt arcu non sodales neque sodales ut.
-                    </p>
-                    <ul class="list-reset"><p class="bold">Project Team</p>
-                            <li>A project by <a href="#">Bruno Moreschi</a></li>
-                            <li>Development by <a href="#">Bernardo Fontes</a></li>
-                            <li>Development by <a href="#">Joana Souza</a></li>
-                            <li>Graphic Design <a href="#">Guilherme Falcão</a>
-                    </ul>
-        </div>
-    </div>
-</div>
+<a id="login-link" class="bold" href="/login/">EXCHANGES w/ <span class="underline">Turkers</span></a>
+<p id="about-link" class="bold strike">About</p>
+<p id="user-info">Your are logged in as <span class="underline bold">{{ request.user.username }}</span></p>
+<a id="return-link" href="/" class="bold">Return to Chats</a>
+<section id="about-text" class="vertically-aligned">
+  <section class="vertical-wrapper">
+    <span class="bold title">About</span>
+    <p class="pt5">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pulvinar neque laoreet suspendisse interdum consectetur. Ut diam quam nulla porttitor massa id neque. Augue lacus viverra vitae congue eu consequat ac. Fermentum dui faucibus in ornare quam viverra. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Nunc scelerisque viverra mauris in aliquam sem fringilla. Dui ut ornare lectus sit amet est placerat in. Faucibus vitae aliquet nec ullamcorper sit amet risus nullam eget. Elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Sodales neque sodales ut etiam sit amet nisl purus. Cursus turpis massa tincidunt dui ut ornare lectus sit amet. Porttitor rhoncus dolor purus non enim praesent. Arcu ac tortor dignissim convallis. Ullamcorper sit amet risus nullam.
+    </p>
+    <p>
+      Integer quis auctor elit sed vulputate mi sit. Urna cursus eget nunc scelerisque. Pharetra sit amet aliquam id diam maecenas ultricies mi. Nec ullamcorper sit amet risus nullam eget felis eget nunc. Phasellus vestibulum lorem sed risus ultricies tristique nulla. Massa sed elementum tempus egestas. At elementum eu facilisis sed odio morbi quis commodo odio. Sed augue lacus viverra vitae congue. Viverra aliquet eget sit amet. Quis eleifend quam adipiscing vitae. Ultrices tincidunt arcu non sodales neque sodales ut.
+    </p>
+    <ul class="list-reset">
+      <li class="bold">PROJECT Team</li>
+      <li>A project by <a href="#">Bruno Moreschi</a></li>
+      <li>Development by <a href="#">Bernardo Fontes</a></li>
+      <li>Development by <a href="#">Luciano Ratamero</a></li>
+      <li>Graphic Design <a href="#">Guilherme Falcão</a>
+    </ul>
+  </section>
+</section>
 {% endblock %}
