@@ -13,7 +13,7 @@
         <section class="p3 border table-cell align-middle">
           <p class="bold mb2">To start, please log in</p>
           {% csrf_token %}
-          {{ form.as_p }}
+          {{ form.as_table }}
         </section>
 
         <input class="underline bold p2 ml3 mt8 table-cell align-middle" type="submit" value="START >">
