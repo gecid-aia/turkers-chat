@@ -11,7 +11,7 @@
   {% render_bundle "main" "css" %}
 </head>
 
-<body {% if request.path == '/login/' %}class="inverted"{% endif %}>
+<body {% if request.path == '/login/' or request.path == '/register/' %}class="inverted"{% endif %}>
   <div id="content" class="clearfix">
     {% block content %}
     {% endblock %}
