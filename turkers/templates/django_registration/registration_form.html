@@ -1,13 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section id="login-page">
+  <section class="vertically-aligned">
+    <section class="vertical-wrapper">
+      <section class="bold p3 mb4 ml4 border">
+        <p class="bold center">EXCHANGES w/ <span class="underline">Turkers</span></p>
+      </section>
 
-<form action="." method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+      <form class="table" action="." method="POST">
+        <section class="p3 border table-cell align-middle">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <p><b>Google Captcha Here!</b></p>
+        </section>
 
-    <p><b>Google Captcha Here!</b></p>
-    <input type="submit" value="Register">
-</form>
+        <input class="underline bold p2 ml3 mt8 table-cell align-middle" type="submit" value="Register" />
+      </form>
+    </section>
+  </section>
+
+</section>
 
 {% endblock %}

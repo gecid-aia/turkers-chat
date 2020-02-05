@@ -9,6 +9,7 @@ class ChatsPage extends React.Component {
   render() {
     return this.props.chats.map((chat) => (
       <ChatBox
+        key={chat.id}
         messagesUrl={chat.messages_url}
         chatTitle={chat.title}
         chatId={chat.id}
