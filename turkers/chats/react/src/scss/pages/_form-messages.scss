@@ -1,0 +1,19 @@
+.errorlist {
+  padding: 0.4em;
+  border: 1px solid red;
+  border-bottom: 0;
+  background-color: rgba(255, 215, 215, 0.17);
+  font-size: 0.7em;
+  list-style: none;
+  text-align: center;
+}
+
+.helptext {
+  font-size: 0.7em;
+  margin-bottom: 2em;
+  display: block;
+  padding: 0.8em 1em;
+  border: 1px dashed black;
+  border-top: 0;
+  list-style: inside;
+}

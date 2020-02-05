@@ -4,5 +4,7 @@
   form {
     p { margin: 2em auto; }
     label { margin-bottom: 0.4em; display: block; }
+    br { display: none; }
+    input + label { margin-top: 1em; }
   }
 }
