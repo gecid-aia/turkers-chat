@@ -71,6 +71,12 @@ class Message(models.Model):
         return self.sender.username
 
     @property
+    def sender_is_turker(self):
+        if not self.sender:
+            return False
+        return self.sender.is_turker
+
+    @property
     def turker_chat_url(self):
         if not self.sender or self.sender.is_regular:
             return ''

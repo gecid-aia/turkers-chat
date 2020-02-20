@@ -16,7 +16,7 @@ class MessageSerializer(BaseMessageSerializer):
 
     class Meta:
         model = BaseMessageSerializer.Meta.model
-        fields = BaseMessageSerializer.Meta.fields + ['reply_to', 'accept_reply']
+        fields = BaseMessageSerializer.Meta.fields + ['reply_to', 'accept_reply', 'sender_is_turker']
 
     def get_accept_reply(self, msg):
         user = self.context.get('user', None)

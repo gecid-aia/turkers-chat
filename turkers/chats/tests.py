@@ -49,6 +49,7 @@ class MessageSerializerTests(TestCase):
             'id': msg.id,
             'reply_to': None,
             'accept_reply': False,
+            'sender_is_turker': False,
         }
         serializer = MessageSerializer(instance=msg, context=self.ctx)
 
@@ -66,6 +67,7 @@ class MessageSerializerTests(TestCase):
             'id': msg.id,
             'reply_to': None,
             'accept_reply': False,
+            'sender_is_turker': False,
         }
         serializer = MessageSerializer(instance=msg, context=self.ctx)
 
@@ -81,6 +83,7 @@ class MessageSerializerTests(TestCase):
             'id': msg.id,
             'reply_to': None,
             'accept_reply': False,
+            'sender_is_turker': True,
         }
         serializer = MessageSerializer(instance=msg, context=self.ctx)
 
@@ -96,6 +99,7 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': reply.id,
             'accept_reply': False,
+            'sender_is_turker': True,
             'reply_to': {
                 'sender_username': 'foo_user',
                 'content': 'a comment',
@@ -118,6 +122,7 @@ class MessageSerializerTests(TestCase):
             'id': msg.id,
             'reply_to': None,
             'accept_reply': True,
+            'sender_is_turker': False,
         }
         serializer = MessageSerializer(instance=msg, context={'user': self.user})
 
