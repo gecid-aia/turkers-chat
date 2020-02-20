@@ -126,7 +126,11 @@ class MessageSerializerTests(TestCase):
 
 class ChatSerializerTests(TestCase):
 
-    def test_serialize_chat(self):
+    def setUp(self):
+        self.user = baker.make(User, user_type=USER_TYPE.Regular.value)
+        self.turker = baker.make(User, user_type=USER_TYPE.Turker.value)
+
+    def test_serialize_collective_chat_for_regular_user(self):
         chat = Chat.objects.get_collective_chat()
 
         expected = {
@@ -134,9 +138,55 @@ class ChatSerializerTests(TestCase):
             'info': '',
             'id': chat.id,
             'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
-            'is_collective': True
+            'is_collective': True,
+            'open_for_messages': False
         }
-        serializer = ChatSerializer(instance=chat)
+        serializer = ChatSerializer(instance=chat, context={'user': self.user})
+
+        assert expected == serializer.data
+
+    def test_serialize_collective_chat_for_turker_user(self):
+        chat = Chat.objects.get_collective_chat()
+
+        expected = {
+            'title': 'Collective Chat',
+            'info': '',
+            'id': chat.id,
+            'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
+            'is_collective': True,
+            'open_for_messages': True
+        }
+        serializer = ChatSerializer(instance=chat, context={'user': self.turker})
+
+        assert expected == serializer.data
+
+    def test_serialize_turker_chat_for_regular_user(self):
+        chat = self.turker.chat
+
+        expected = {
+            'title': self.turker.username,
+            'info': '',
+            'id': chat.id,
+            'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
+            'is_collective': False,
+            'open_for_messages': True
+        }
+        serializer = ChatSerializer(instance=chat, context={'user': self.user})
+
+        assert expected == serializer.data
+
+    def test_serialize_turker_chat_for_turker_user(self):
+        chat = self.turker.chat
+
+        expected = {
+            'title': self.turker.username,
+            'info': '',
+            'id': chat.id,
+            'messages_url': reverse('chats_api:chat_messages', args=[chat.id]),
+            'is_collective': False,
+            'open_for_messages': True
+        }
+        serializer = ChatSerializer(instance=chat, context={'user': self.turker})
 
         assert expected == serializer.data
 

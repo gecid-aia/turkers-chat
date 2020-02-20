@@ -44,7 +44,12 @@ class NewChatMessageSerializer(serializers.ModelSerializer):
 
 
 class ChatSerializer(serializers.ModelSerializer):
+    open_for_messages = serializers.SerializerMethodField()
 
     class Meta:
         model = Chat
-        fields = ['title', 'info', 'is_collective', 'messages_url', 'id']
+        fields = ['title', 'info', 'is_collective', 'messages_url', 'id', 'open_for_messages']
+
+    def get_open_for_messages(self, chat):
+        user = self.context.get('user', None)
+        return chat.user_can_post(user)
