@@ -20,9 +20,7 @@ class MessageSerializer(BaseMessageSerializer):
 
     def get_accept_reply(self, msg):
         user = self.context.get('user', None)
-        if not user:
-            return False
-        return user.is_turker
+        return msg.user_can_reply(user)
 
 
 class NewChatMessageSerializer(serializers.ModelSerializer):
