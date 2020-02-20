@@ -36,6 +36,8 @@ class MessageSerializerTests(TestCase):
 
     def setUp(self):
         self.chat = Chat.objects.get_collective_chat()
+        self.user = baker.make(User, user_type=USER_TYPE.Regular.value)
+        self.ctx = {'user': self.user}
 
     def test_serialize_regular_user_message(self):
         user = baker.make(User, user_type=USER_TYPE.Regular.value)
@@ -46,8 +48,9 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'reply_to': None,
+            'accept_reply': False,
         }
-        serializer = MessageSerializer(instance=msg)
+        serializer = MessageSerializer(instance=msg, context=self.ctx)
 
         assert expected == serializer.data
 
@@ -62,8 +65,9 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'reply_to': None,
+            'accept_reply': False,
         }
-        serializer = MessageSerializer(instance=msg)
+        serializer = MessageSerializer(instance=msg, context=self.ctx)
 
         assert expected == serializer.data
 
@@ -76,8 +80,9 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'reply_to': None,
+            'accept_reply': False,
         }
-        serializer = MessageSerializer(instance=msg)
+        serializer = MessageSerializer(instance=msg, context=self.ctx)
 
         assert expected == serializer.data
 
@@ -90,13 +95,31 @@ class MessageSerializerTests(TestCase):
             'sender_username': user.username,
             'content': 'xpto',
             'id': reply.id,
+            'accept_reply': False,
             'reply_to': {
                 'sender_username': 'foo_user',
                 'content': 'a comment',
                 'id': msg.id,
             },
         }
-        serializer = MessageSerializer(instance=reply)
+        serializer = MessageSerializer(instance=reply, context=self.ctx)
+
+        assert expected == serializer.data
+
+    def test_turker_users_can_reply_to_messages(self):
+        user = baker.make(User, user_type=USER_TYPE.Regular.value)
+        msg = baker.make(Message, sender=user, content='xpto', chat=self.chat)
+
+        self.user.user_type = USER_TYPE.Turker.value
+        self.user.save()
+        expected = {
+            'sender_username': user.username,
+            'content': 'xpto',
+            'id': msg.id,
+            'reply_to': None,
+            'accept_reply': True,
+        }
+        serializer = MessageSerializer(instance=msg, context={'user': self.user})
 
         assert expected == serializer.data
 

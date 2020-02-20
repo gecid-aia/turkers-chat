@@ -12,10 +12,17 @@ class BaseMessageSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(BaseMessageSerializer):
     reply_to = BaseMessageSerializer()
+    accept_reply = serializers.SerializerMethodField()
 
     class Meta:
         model = BaseMessageSerializer.Meta.model
-        fields = BaseMessageSerializer.Meta.fields + ['reply_to']
+        fields = BaseMessageSerializer.Meta.fields + ['reply_to', 'accept_reply']
+
+    def get_accept_reply(self, msg):
+        user = self.context.get('user', None)
+        if not user:
+            return False
+        return user.is_turker
 
 
 class ChatSerializer(serializers.ModelSerializer):
