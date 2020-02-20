@@ -10,7 +10,7 @@ from chats.serializers import ChatSerializer, MessageSerializer, NewChatMessageS
 
 
 class ChatEndpoint(RetrieveAPIView):
-    queryset = Chat.objects.all()
+    queryset = Chat.objects.select_related('turker').all()
     serializer_class = ChatSerializer
     lookup_url_kwarg = 'chat_id'
 
@@ -48,7 +48,7 @@ class UserAvailableChatsEndpoint(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if user.is_regular:
-            return Chat.objects.all()
+            return Chat.objects.select_related('turker').all()
         elif user.is_turker:
             return [
                 Chat.objects.get_collective_chat(),
