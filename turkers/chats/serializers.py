@@ -34,6 +34,8 @@ class NewChatMessageSerializer(serializers.ModelSerializer):
         chat = data['chat']
         sender = data['sender']
 
+        if not chat.user_can_post(sender):
+            raise serializers.ValidationError("User is not allowed to post new messages in this chat")
         if reply_to:
             if reply_to.chat_id != chat.id:
                raise serializers.ValidationError("Can't reply to messages from other chats")

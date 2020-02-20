@@ -226,7 +226,8 @@ class ListChatMessagesEndpointTests(TestCase):
     def setUp(self):
         self.user = baker.make(User)
         self.client.force_login(self.user)
-        self.chat = Chat.objects.get_collective_chat()
+        self.turker_user = baker.make(User, user_type=USER_TYPE.Turker.value)
+        self.chat = self.turker_user.chat
         self.url = reverse('chats_api:chat_messages', args=[self.chat.id])
 
     def test_login_required(self):
@@ -345,6 +346,24 @@ class ListChatMessagesEndpointTests(TestCase):
         self.url = reverse('chats_api:chat_messages', args=[1000])
         response = self.client.post(self.url, data={'content': 'new msg'})
         assert 404 == response.status_code
+
+    def test_regular_user_can_not_post_on_collective_chat(self):
+        chat = Chat.objects.get_collective_chat()
+        url = reverse('chats_api:chat_messages', args=[chat.id])
+
+        response = self.client.post(url, data={'content': 'hi all turkers!'})
+
+        assert 400 == response.status_code
+        assert 'non_field_errors' in response.json()
+
+    def test_turker_user_not_post_on_collective_chat(self):
+        chat = Chat.objects.get_collective_chat()
+        url = reverse('chats_api:chat_messages', args=[chat.id])
+        self.client.force_login(self.turker_user)
+
+        response = self.client.post(url, data={'content': 'hi all turkers!'})
+
+        assert 201 == response.status_code
 
 
 class ListUserAvailableChatsTests(TestCase):
