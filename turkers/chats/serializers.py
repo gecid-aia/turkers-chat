@@ -15,7 +15,7 @@ class MessageSerializer(BaseMessageSerializer):
 
     class Meta:
         model = BaseMessageSerializer.Meta.model
-        fields = BaseMessageSerializer.Meta.fields + ['turker_chat_url', 'reply_to']
+        fields = BaseMessageSerializer.Meta.fields + ['reply_to']
 
 
 class ChatSerializer(serializers.ModelSerializer):

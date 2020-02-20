@@ -45,7 +45,6 @@ class MessageSerializerTests(TestCase):
             'sender_username': user.username,
             'content': 'xpto',
             'id': msg.id,
-            'turker_chat_url': '',
             'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
@@ -62,7 +61,6 @@ class MessageSerializerTests(TestCase):
             'sender_username': 'Anonymous',
             'content': 'xpto',
             'id': msg.id,
-            'turker_chat_url': '',
             'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
@@ -77,7 +75,6 @@ class MessageSerializerTests(TestCase):
             'sender_username': user.username,
             'content': 'xpto',
             'id': msg.id,
-            'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
             'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
@@ -93,7 +90,6 @@ class MessageSerializerTests(TestCase):
             'sender_username': user.username,
             'content': 'xpto',
             'id': reply.id,
-            'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
             'reply_to': {
                 'sender_username': 'foo_user',
                 'content': 'a comment',
