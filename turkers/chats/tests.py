@@ -46,6 +46,7 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'turker_chat_url': '',
+            'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
 
@@ -62,6 +63,7 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'turker_chat_url': '',
+            'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
 
@@ -76,8 +78,29 @@ class MessageSerializerTests(TestCase):
             'content': 'xpto',
             'id': msg.id,
             'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
+            'reply_to': None,
         }
         serializer = MessageSerializer(instance=msg)
+
+        assert expected == serializer.data
+
+    def test_serialize_reply_message(self):
+        user = baker.make(User, user_type=USER_TYPE.Turker.value)
+        msg = baker.make(Message, content='a comment', chat=user.chat, sender__username='foo_user')
+        reply = baker.make(Message, sender=user, content='xpto', chat=user.chat, reply_to=msg)
+
+        expected = {
+            'sender_username': user.username,
+            'content': 'xpto',
+            'id': reply.id,
+            'turker_chat_url': reverse('chats_api:chat', args=[user.chat.id]),
+            'reply_to': {
+                'sender_username': 'foo_user',
+                'content': 'a comment',
+                'id': msg.id,
+            },
+        }
+        serializer = MessageSerializer(instance=reply)
 
         assert expected == serializer.data
 
