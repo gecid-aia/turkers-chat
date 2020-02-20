@@ -30,6 +30,7 @@ class ListChatMessagesEndpoint(ListAPIView):
     def post(self, request, chat_id):
         data = {
             'content': request.data.get('content', '').strip(),
+            'reply_to': request.data.get('reply_to', '').strip(),
             'sender': request.user.id,
             'chat': get_object_or_404(Chat, id=self.kwargs['chat_id']).id
         }

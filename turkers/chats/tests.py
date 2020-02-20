@@ -219,7 +219,6 @@ class ListChatMessagesEndpointTests(TestCase):
 
         assert data['results'][0]['accept_reply'] is True
 
-
     def test_add_new_message_on_post(self):
         response = self.client.post(self.url, data={'content': 'new msg'})
         new_msg = Message.objects.first()
@@ -233,6 +232,27 @@ class ListChatMessagesEndpointTests(TestCase):
         assert expected == response.json()
         assert self.user == new_msg.sender
         assert self.chat == new_msg.chat
+        assert new_msg.reply_to is None
+
+    def test_reply_to_a_message(self):
+        msg = baker.make(Message, chat=self.chat)
+        self.user.user_type = USER_TYPE.Turker.value
+        self.user.save()
+
+        data={'content': 'new msg', 'reply_to': msg.id}
+        response = self.client.post(self.url, data=data)
+        new_msg = Message.objects.latest('id')
+        expected = MessageSerializer(
+            instance=new_msg,
+            context={'user': self.user},
+        ).data
+
+        assert 201 == response.status_code
+        assert 'new msg' == new_msg.content
+        assert expected == response.json()
+        assert self.user == new_msg.sender
+        assert self.chat == new_msg.chat
+        assert msg == new_msg.reply_to
 
     def test_bad_request_if_no_messages(self):
         response = self.client.post(self.url, data={'content': ''})
@@ -248,6 +268,28 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 'content' in response.json()
 
         assert Message.objects.exists() is False
+
+    def test_bad_request_if_reply_to_is_from_another_chat(self):
+        other_turker = baker.make(User, user_type=USER_TYPE.Turker.value)
+        msg = baker.make(Message, chat=other_turker.chat)
+        assert msg.chat != self.chat
+        self.user.user_type = USER_TYPE.Turker.value
+        self.user.save()
+
+        data={'content': 'new msg', 'reply_to': msg.id}
+        response = self.client.post(self.url, data=data)
+
+        assert 400 == response.status_code
+        assert 'non_field_errors' in response.json()
+
+    def test_bad_request_if_reply_from_regular_user(self):
+        msg = baker.make(Message, chat=self.chat)
+
+        data={'content': 'new msg', 'reply_to': msg.id}
+        response = self.client.post(self.url, data=data)
+
+        assert 400 == response.status_code
+        assert 'non_field_errors' in response.json()
 
     def test_404_post_on_unexisting_chat(self):
         self.url = reverse('chats_api:chat_messages', args=[1000])

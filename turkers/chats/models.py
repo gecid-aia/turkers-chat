@@ -70,6 +70,11 @@ class Message(models.Model):
             return ''
         return reverse('chats_api:chat', args=[self.sender.chat.id])
 
+    def user_can_reply(self, user):
+        if not user:
+            return False
+        return user.is_turker
+
 
 @receiver(post_save, sender=User)
 def create_turker_chat(sender, instance, created, *args, **kwargs):

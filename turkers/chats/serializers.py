@@ -29,7 +29,20 @@ class NewChatMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['sender', 'content', 'chat']
+        fields = ['sender', 'content', 'chat', 'reply_to']
+
+    def validate(self, data):
+        reply_to = data.get('reply_to')
+        chat = data['chat']
+        sender = data['sender']
+
+        if reply_to:
+            if reply_to.chat_id != chat.id:
+               raise serializers.ValidationError("Can't reply to messages from other chats")
+            elif not reply_to.user_can_reply(sender):
+               raise serializers.ValidationError("User can't reply to this message")
+
+        return data
 
 
 class ChatSerializer(serializers.ModelSerializer):
