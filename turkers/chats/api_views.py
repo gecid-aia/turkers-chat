@@ -25,7 +25,7 @@ class ListChatMessagesEndpoint(ListAPIView):
 
     def get_queryset(self):
         chat = get_object_or_404(Chat, id=self.kwargs['chat_id'])
-        return chat.messages.all()
+        return chat.messages.select_related('sender', 'reply_to').all()
 
     def post(self, request, chat_id):
         data = {
