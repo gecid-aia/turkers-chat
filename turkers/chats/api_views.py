@@ -14,6 +14,11 @@ class ChatEndpoint(RetrieveAPIView):
     serializer_class = ChatSerializer
     lookup_url_kwarg = 'chat_id'
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
+
 
 class ListChatMessagesEndpoint(ListAPIView):
     serializer_class = MessageSerializer
@@ -54,3 +59,8 @@ class UserAvailableChatsEndpoint(ListAPIView):
                 Chat.objects.get_collective_chat(),
                 Chat.objects.get_turker_chat(user.id)
             ]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context

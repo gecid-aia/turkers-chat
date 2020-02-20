@@ -194,9 +194,9 @@ class ChatSerializerTests(TestCase):
 class ChatEndpointTests(TestCase):
 
     def setUp(self):
-        user = baker.make(User, user_type=USER_TYPE.Turker.value)
-        self.client.force_login(user)
-        self.chat = user.chat
+        self.user = baker.make(User, user_type=USER_TYPE.Turker.value)
+        self.client.force_login(self.user)
+        self.chat = self.user.chat
         self.url = reverse('chats_api:chat', args=[self.chat.id])
 
     def test_login_required(self):
@@ -208,7 +208,7 @@ class ChatEndpointTests(TestCase):
 
     def test_get_chat_data(self):
         response = self.client.get(self.url)
-        expected = ChatSerializer(instance=self.chat).data
+        expected = ChatSerializer(instance=self.chat, context={'user': self.user}).data
 
         assert 200 == response.status_code
         assert expected == response.json()
@@ -366,7 +366,7 @@ class ListUserAvailableChatsTests(TestCase):
             User, user_type=USER_TYPE.Turker.value, _quantity=5
         )]
         response = self.client.get(self.url)
-        expected = ChatSerializer(instance=Chat.objects.all(), many=True).data
+        expected = ChatSerializer(instance=Chat.objects.all(), context={'user': self.user}, many=True).data
         data = response.json()
 
         assert 200 == response.status_code
@@ -380,7 +380,9 @@ class ListUserAvailableChatsTests(TestCase):
         turker_chat = baker.make(Chat, turker=self.user)
         collective = Chat.objects.get_collective_chat()
 
-        expected = ChatSerializer(instance=[collective, turker_chat], many=True).data
+        expected = ChatSerializer(
+            instance=[collective, turker_chat], context={'user': self.user}, many=True
+        ).data
         response = self.client.get(self.url)
         data = response.json()
 
