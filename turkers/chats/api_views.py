@@ -18,6 +18,11 @@ class ChatEndpoint(RetrieveAPIView):
 class ListChatMessagesEndpoint(ListAPIView):
     serializer_class = MessageSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
+
     def get_queryset(self):
         chat = get_object_or_404(Chat, id=self.kwargs['chat_id'])
         return chat.messages.all()

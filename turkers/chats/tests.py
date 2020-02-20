@@ -199,19 +199,38 @@ class ListChatMessagesEndpointTests(TestCase):
         response = self.client.get(self.url)
         data = response.json()
 
-        expected = MessageSerializer(instance=messages[::-1][:20], many=True).data
+        expected = MessageSerializer(
+            instance=messages[::-1][:20],
+            context={'user': self.user},
+            many=True
+        ).data
         assert 200 == response.status_code
         assert expected == data['results']
         assert 42 == data['count']
         assert 'next' in data
 
+    def test_ensure_the_logged_user_is_being_used_in_context(self):
+        self.user.user_type = USER_TYPE.Turker.value
+        self.user.save()
+        messages = baker.make(Message, chat=self.chat, _quantity=42)
+
+        response = self.client.get(self.url)
+        data = response.json()
+
+        assert data['results'][0]['accept_reply'] is True
+
+
     def test_add_new_message_on_post(self):
         response = self.client.post(self.url, data={'content': 'new msg'})
         new_msg = Message.objects.first()
+        expected = MessageSerializer(
+            instance=new_msg,
+            context={'user': self.user},
+        ).data
 
         assert 201 == response.status_code
         assert 'new msg' == new_msg.content
-        assert MessageSerializer(instance=new_msg).data == response.json()
+        assert expected == response.json()
         assert self.user == new_msg.sender
         assert self.chat == new_msg.chat
 
