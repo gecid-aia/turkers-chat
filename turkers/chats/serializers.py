@@ -25,6 +25,13 @@ class MessageSerializer(BaseMessageSerializer):
         return user.is_turker
 
 
+class NewChatMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = ['sender', 'content', 'chat']
+
+
 class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:

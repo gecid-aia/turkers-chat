@@ -239,6 +239,10 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 400 == response.status_code
         assert 'content' in response.json()
 
+        response = self.client.post(self.url, data={'content': '       '})
+        assert 400 == response.status_code
+        assert 'content' in response.json()
+
         response = self.client.post(self.url, data={})
         assert 400 == response.status_code
         assert 'content' in response.json()

@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from chats.models import Chat
-from chats.serializers import ChatSerializer, MessageSerializer
+from chats.serializers import ChatSerializer, MessageSerializer, NewChatMessageSerializer
 
 
 class ChatEndpoint(RetrieveAPIView):
@@ -28,17 +28,17 @@ class ListChatMessagesEndpoint(ListAPIView):
         return chat.messages.all()
 
     def post(self, request, chat_id):
-        chat = get_object_or_404(Chat, id=self.kwargs['chat_id'])
+        data = {
+            'content': request.data.get('content', '').strip(),
+            'sender': request.user.id,
+            'chat': get_object_or_404(Chat, id=self.kwargs['chat_id']).id
+        }
 
-        content = str(request.data.get('content', ''))
-        if not content:
-            return Response({'content': 'A new message must have content.'}, status=400)
+        input_serializer = NewChatMessageSerializer(data=data)
+        input_serializer.is_valid(raise_exception=True)
 
-        new_msg = chat.messages.create(
-            sender=request.user,
-            content=content
-        )
-        return Response(self.serializer_class(instance=new_msg).data, status=201)
+        new_msg = input_serializer.save()
+        return Response(self.get_serializer(instance=new_msg).data, status=201)
 
 
 class UserAvailableChatsEndpoint(ListAPIView):
