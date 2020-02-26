@@ -67,6 +67,7 @@
       }
     }
   }
+  &.closed-for-messages .messages { height: 26em; max-height: 26em; }
 
   .separator {
     border-top: 3px solid black;

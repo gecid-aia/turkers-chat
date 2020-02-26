@@ -8,16 +8,19 @@ import ChatInfoOverlay from './ChatInfoOverlay';
 
 export default class ChatBox extends React.Component {
   static propTypes = {
-    chatId: PropTypes.number.isRequired,
-    messagesUrl: PropTypes.string.isRequired,
-    chatTitle: PropTypes.string.isRequired,
-    chatIsCollective: PropTypes.bool.isRequired,
+    chat: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      messages_url: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      is_collective: PropTypes.bool.isRequired,
+      open_for_messages: PropTypes.bool.isRequired,
+    })
   }
 
   constructor(props){
     super(props);
     this.state = {
-      showChat: props.chatIsCollective,
+      showChat: props.chat.is_collective,
       showInfo: false,
     }
   }
@@ -40,28 +43,33 @@ export default class ChatBox extends React.Component {
 
   render(){
     const { showChat, showInfo } = this.state;
-    const { messagesUrl, chatId, chatInfo, chatTitle, chatIsCollective } = this.props;
+    const { messages_url, id, info, title, is_collective, open_for_messages } = this.props.chat;
 
     return (
       <Draggable
         handle=".header"
         bounds="parent"
         defaultPosition={{
-          x: chatIsCollective ? 0 : window.innerWidth / 2 * Math.random(),
-          y: chatIsCollective ? 0 : window.innerHeight / 2 * Math.random()
+          x: is_collective ? 0 : window.innerWidth / 2 * Math.random(),
+          y: is_collective ? 0 : window.innerHeight / 2 * Math.random()
       }}
       >
         <div
-          id={chatIsCollective ? "collective-chat" : ''}
-          className={"chat-box" + (showChat ? '' : ' collapsed') + (showInfo ? ' inverted' : '')}
+          id={is_collective ? "collective-chat" : ''}
+          className={
+            `chat-box
+            ${showChat ? '' : ' collapsed'}
+            ${showInfo ? ' inverted' : ''}
+            ${open_for_messages ? '' : ' closed-for-messages'}
+          `}
         >
 
           <div className="header">
-            <strong>{chatTitle.toUpperCase()}</strong>
+            <strong>{title.toUpperCase()}</strong>
 
 
             <div className="chat-controls">
-              {chatInfo && chatInfo.length ? <span onClick={this._toggleInfo}>?</span> : null}
+              {info && info.length ? <span onClick={this._toggleInfo}>?</span> : null}
               <span onClick={this._toggleChat}>{showChat ? '—' : '|'}</span>
             </div>
           </div>
@@ -73,15 +81,19 @@ export default class ChatBox extends React.Component {
               {showInfo
                 ? (
                   <React.Fragment>
-                    <ChatInfoOverlay text={chatInfo} />
+                    <ChatInfoOverlay text={info} />
                     <a className="return-to-chat-link" href="#" onClick={this._toggleInfo}>Return to chat</a>
                   </React.Fragment>
                 )
                 : (
                   <React.Fragment>
-                    <Messages messagesUrl={messagesUrl} chatId={chatId} />
-                    <div className="separator"></div>
-                    <MessageInput messagesUrl={messagesUrl} />
+                    <Messages messagesUrl={messages_url} chatId={id} />
+                    {open_for_messages ? (
+                      <React.Fragment>
+                        <div className="separator"></div>
+                        <MessageInput messagesUrl={messages_url} />
+                      </React.Fragment>
+                    ) : null}
                   </React.Fragment>
                 )}
 
