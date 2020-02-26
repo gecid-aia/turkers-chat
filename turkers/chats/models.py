@@ -44,6 +44,12 @@ class Chat(models.Model):
     def messages_url(self):
         return reverse('chats_api:chat_messages', args=[self.id])
 
+    def user_can_post(self, user):
+        if self.is_collective:
+            return user.is_turker
+        else:
+            return True
+
     def __str__(self):
         return self.title
 
@@ -53,6 +59,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
     content = models.TextField(blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    reply_to = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         ordering = ['-timestamp']
@@ -64,10 +71,21 @@ class Message(models.Model):
         return self.sender.username
 
     @property
+    def sender_is_turker(self):
+        if not self.sender:
+            return False
+        return self.sender.is_turker
+
+    @property
     def turker_chat_url(self):
         if not self.sender or self.sender.is_regular:
             return ''
         return reverse('chats_api:chat', args=[self.sender.chat.id])
+
+    def user_can_reply(self, user):
+        if not user:
+            return False
+        return user.is_turker
 
 
 @receiver(post_save, sender=User)
