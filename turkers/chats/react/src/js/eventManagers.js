@@ -5,6 +5,7 @@ import {
   unionBy as _unionBy,
   sortBy as _orderBy,
 } from 'lodash';
+import { getCurrentStateFromEvent } from "rel-events/dist/helpers";
 
 export class GetChatMessagesEventManager {
   initialState = { chats: {} };
@@ -53,8 +54,13 @@ export class GetChatsEventManager {
 }
 
 export class SendMessageEventManager {
-  initialState = {}
-  call = ({ messagesUrl, message }) => {
+  initialState = { isLoading: false };
+
+  shouldDispatch = (appState, event) => {
+    const currentState = getCurrentStateFromEvent({ event: SendMessageEvent, appState });
+    return !currentState.isLoading;
+  }
+
     const requestData = {
       method: 'POST',
       body: JSON.stringify({
