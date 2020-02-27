@@ -18,6 +18,12 @@
   height: 32em;
   position: absolute;
 
+  &.replying-message {
+    height: 36em;
+
+    input { margin-top: 0.4em; }
+  }
+
   &.collapsed { height: auto; }
 
   .return-to-chat-link {
@@ -58,8 +64,29 @@
     -webkit-flex-flow: column nowrap;
     flex-flow: column nowrap;
 
+    .reply-icon { display: none; margin-left: 4px; }
+    .can-be-replied { cursor: pointer; }
+
     .message {
       margin: 0.8em 0 0;
+      color: #444;
+
+      &:hover {
+        &.can-be-replied .sender .reply-icon { display: inline-block; }
+        &.can-be-replied.turker-message .sender .reply-icon { position: absolute; left: -20px; }
+      }
+
+      &.turker-message {
+        color: black;
+        text-align: right;
+        padding-right: 0.8em;
+
+        .message-reply p { border-left: 0; border-right: solid 3px; }
+      }
+
+      span {
+        position: relative;
+      }
 
       .sender {
         font-weight: bold;
@@ -67,6 +94,20 @@
       }
     }
   }
+
+  .message-reply {
+    .reply-icon { display: inline-block; }
+
+    p {
+      color: #ccc;
+      border-left: solid 3px;
+      padding: 0 0.4em;
+      font-size: 0.8em;
+
+      &.sender, &.title { font-weight: bold; }
+    }
+  }
+
   &.closed-for-messages .messages { height: 26em; max-height: 26em; }
 
   .separator {

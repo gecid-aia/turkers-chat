@@ -5,6 +5,7 @@ import Draggable from 'react-draggable';
 import Messages from './Messages';
 import MessageInput from './MessageInput';
 import ChatInfoOverlay from './ChatInfoOverlay';
+import FilterMessagesIcon from './static/FilterMessagesIcon';
 
 export default class ChatBox extends React.Component {
   static propTypes = {
@@ -14,17 +15,22 @@ export default class ChatBox extends React.Component {
       title: PropTypes.string.isRequired,
       is_collective: PropTypes.bool.isRequired,
       open_for_messages: PropTypes.bool.isRequired,
+      replyTo: PropTypes.object,
     })
   }
+
+  static defaultProps = { replyTo: null };
 
   constructor(props){
     super(props);
     this.state = {
       showChat: props.chat.is_collective,
       showInfo: false,
+      filterTurkersMessages: false,
     }
   }
 
+  _toggleFilterMessages = () => this.setState({ filterTurkersMessages: !this.state.filterTurkersMessages })
   _toggleChatAndInfo = () => this.setState({ showChat: !this.state.showChat, showInfo: !this.state.showInfo })
 
   _toggleChat = () => {
@@ -42,8 +48,9 @@ export default class ChatBox extends React.Component {
   };
 
   render(){
-    const { showChat, showInfo } = this.state;
-    const { messages_url, id, info, title, is_collective, open_for_messages } = this.props.chat;
+    const { showChat, showInfo, filterTurkersMessages } = this.state;
+    const { replyTo, chat } = this.props;
+    const { messages_url, id, info, title, is_collective, open_for_messages } = chat;
 
     return (
       <Draggable
@@ -61,14 +68,15 @@ export default class ChatBox extends React.Component {
             ${showChat ? '' : ' collapsed'}
             ${showInfo ? ' inverted' : ''}
             ${open_for_messages ? '' : ' closed-for-messages'}
+            ${replyTo ? ' replying-message' : ''}
           `}
         >
 
           <div className="header">
             <strong>{title.toUpperCase()}</strong>
 
-
             <div className="chat-controls">
+              <span onClick={this._toggleFilterMessages}><FilterMessagesIcon /></span>
               {info && info.length ? <span onClick={this._toggleInfo}>?</span> : null}
               <span onClick={this._toggleChat}>{showChat ? '—' : '|'}</span>
             </div>
@@ -87,7 +95,7 @@ export default class ChatBox extends React.Component {
                 )
                 : (
                   <React.Fragment>
-                    <Messages messagesUrl={messages_url} chatId={id} />
+                    <Messages filterTurkersMessages={filterTurkersMessages} messagesUrl={messages_url} chatId={id} />
                     {open_for_messages ? (
                       <React.Fragment>
                         <div className="separator"></div>

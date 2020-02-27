@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SendMessageEvent } from '../../events';
+import { SendMessageEvent, SetReplyingMessageEvent } from '../../events';
+import MessageReply from './MessageReply';
 
-class MessageInput extends React.Component {
+let MessageInput = class extends React.Component {
   static propTypes = {
     messagesUrl: PropTypes.string.isRequired,
   }
@@ -14,28 +15,46 @@ class MessageInput extends React.Component {
     this.setState({ message: e.target.value });
   }
 
-  _handleKeyDown = e => {
+  _handleKeyPress = e => {
     if (e.key === 'Enter') {
       const { message }= this.state;
-      const { messagesUrl }= this.props;
+      const { messagesUrl, replyTo } = this.props;
       this.setState({ message: '' }, () => {
+        if (replyTo) {
+          this.props.setReplyingMessage();
+          this.props.sendMessage({ messagesUrl, message, replyTo })
+        };
         this.props.sendMessage({ messagesUrl, message });
       })
     }
   }
 
   render(){
+    const { replyTo } = this.props;
+
     return (
-      <input
-        type="text"
-        value={this.state.message}
-        onChange={this._handleMessageTyping}
-        onKeyDown={this._handleKeyDown}
-      />
+      <React.Fragment>
+        {replyTo ?(
+          <MessageReply message={replyTo} />
+        ) : null}
+        <input
+          type="text"
+          value={this.state.message}
+          onChange={this._handleMessageTyping}
+          onKeyPress={this._handleKeyPress}
+        />
+      </React.Fragment>
     );
   }
 }
 
-export default SendMessageEvent.register({
+MessageInput = SendMessageEvent.register({
   Component: MessageInput,
 });
+
+MessageInput = SetReplyingMessageEvent.register({
+  Component: MessageInput,
+  props: ['replyTo']
+})
+
+export default MessageInput;
