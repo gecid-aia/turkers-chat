@@ -1,4 +1,4 @@
-import { HTTPEvent } from "rel-events";
+import { HTTPEvent, Event } from "rel-events";
 
 import {
   GetChatMessagesEventManager,
@@ -19,4 +19,12 @@ export const GetChatsEvent = new HTTPEvent({
 export const SendMessageEvent = new HTTPEvent({
   name: "sendMessage",
   manager: new SendMessageEventManager()
+});
+
+export const SetReplyingMessageEvent = new Event({
+  name: "setReplyingMessage",
+  manager: {
+    initialState: { replyTo: null },
+    onDispatch: (_, event) => ({ replyTo: event.replyTo })
+  }
 });

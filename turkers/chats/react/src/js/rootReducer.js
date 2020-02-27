@@ -4,13 +4,15 @@ import { combineEventReducers } from "rel-events";
 import {
   GetChatMessagesEvent,
   SendMessageEvent,
-  GetChatsEvent
+  GetChatsEvent,
+  SetReplyingMessageEvent
 } from "./events";
 
 export default combineReducers({
   ...combineEventReducers([
     GetChatMessagesEvent,
     SendMessageEvent,
-    GetChatsEvent
+    GetChatsEvent,
+    SetReplyingMessageEvent
   ])
 });
