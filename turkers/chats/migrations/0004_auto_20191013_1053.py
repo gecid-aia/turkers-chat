@@ -7,17 +7,20 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chats', '0003_auto_20191013_1018'),
+        ("chats", "0003_auto_20191013_1018"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='message',
-            options={'ordering': ['-timestamp']},
+            name="message", options={"ordering": ["-timestamp"]},
         ),
         migrations.AlterField(
-            model_name='message',
-            name='chat',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='chats.Chat'),
+            model_name="message",
+            name="chat",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="messages",
+                to="chats.Chat",
+            ),
         ),
     ]
