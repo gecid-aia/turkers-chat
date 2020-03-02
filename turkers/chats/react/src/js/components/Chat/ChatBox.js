@@ -19,7 +19,7 @@ export default class ChatBox extends React.Component {
     })
   }
 
-  static defaultProps = { replyTo: null };
+  static defaultProps = { replyTo: {} };
 
   constructor(props){
     super(props);
@@ -68,7 +68,7 @@ export default class ChatBox extends React.Component {
             ${showChat ? '' : ' collapsed'}
             ${showInfo ? ' inverted' : ''}
             ${open_for_messages ? '' : ' closed-for-messages'}
-            ${replyTo ? ' replying-message' : ''}
+            ${replyTo[id] ? ' replying-message' : ''}
           `}
         >
 
@@ -99,7 +99,7 @@ export default class ChatBox extends React.Component {
                     {open_for_messages ? (
                       <React.Fragment>
                         <div className="separator"></div>
-                        <MessageInput messagesUrl={messages_url} />
+                        <MessageInput chatId={id} messagesUrl={messages_url} />
                       </React.Fragment>
                     ) : null}
                   </React.Fragment>

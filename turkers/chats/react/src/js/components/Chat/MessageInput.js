@@ -18,11 +18,11 @@ let MessageInput = class extends React.Component {
   _handleKeyPress = e => {
     if (e.key === 'Enter') {
       const { message }= this.state;
-      const { messagesUrl, replyTo } = this.props;
+      const { messagesUrl, replyTo, chatId } = this.props;
       this.setState({ message: '' }, () => {
-        if (replyTo) {
+        if (replyTo[chatId]) {
           this.props.setReplyingMessage();
-          this.props.sendMessage({ messagesUrl, message, replyTo })
+          this.props.sendMessage({ messagesUrl, message, replyTo: replyTo[chatId] })
         };
         this.props.sendMessage({ messagesUrl, message });
       })
@@ -30,12 +30,12 @@ let MessageInput = class extends React.Component {
   }
 
   render(){
-    const { replyTo } = this.props;
+    const { replyTo, chatId } = this.props;
 
     return (
       <React.Fragment>
-        {replyTo ?(
-          <MessageReply message={replyTo} />
+        {replyTo && replyTo[chatId] ?(
+          <MessageReply message={replyTo[chatId]} />
         ) : null}
         <input
           type="text"

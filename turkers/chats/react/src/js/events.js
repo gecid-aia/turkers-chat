@@ -24,7 +24,18 @@ export const SendMessageEvent = new HTTPEvent({
 export const SetReplyingMessageEvent = new Event({
   name: "setReplyingMessage",
   manager: {
-    initialState: { replyTo: null },
-    onDispatch: (_, event) => ({ replyTo: event.replyTo })
+    initialState: { replyTo: {} },
+    onDispatch: (state, event) => {
+      if (!event.replyTo) {
+        return { replyTo: {} };
+      }
+
+      return {
+        replyTo: {
+          ...state.replyTo,
+          [event.chatId]: event.replyTo
+        }
+      };
+    }
   }
 });

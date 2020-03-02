@@ -49,9 +49,9 @@ let Messages = class extends React.Component {
     });
   }
 
-  _setReplyingMessage = replyTo => {
+  _setReplyingMessage = (chatId, replyTo) => {
     if (replyTo.accept_reply) {
-      this.props.setReplyingMessage({ replyTo });
+      this.props.setReplyingMessage({ chatId, replyTo });
     }
   };
 
@@ -73,7 +73,7 @@ let Messages = class extends React.Component {
         {results && results.map((message, i) => (
           <div
             key={i}
-            onClick={() => this._setReplyingMessage(message)}
+            onClick={() => this._setReplyingMessage(chatId, message)}
             className={
               `message
               ${message.sender_is_turker ? ' turker-message' : ''}
