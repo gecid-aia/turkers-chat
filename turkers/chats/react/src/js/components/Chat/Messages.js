@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEqual as _isEqual } from 'lodash';
 
-import { GetChatMessagesEvent } from '../../events';
+import { GetChatMessagesEvent, SetReplyingMessageEvent } from '../../events';
+import ReplyIcon from './static/ReplyIcon';
+import MessageReply from './MessageReply';
 
-class Messages extends React.Component {
+let Messages = class extends React.Component {
   static propTypes = {
     chatId: PropTypes.number.isRequired,
     chats: PropTypes.object.isRequired,
+    filterTurkersMessages: PropTypes.bool.isRequired,
   }
 
   constructor(props){
@@ -39,25 +42,51 @@ class Messages extends React.Component {
     this.setState({ scheduler: null });
   }
 
-  getNextPage = () => {
+  _getNextPage = () => {
     this.props.getChatMessages({
       messagesUrl: this.props.chats[this.props.chatId].nextPage,
       chatId: this.props.chatId,
     });
   }
 
+  _setReplyingMessage = (chatId, replyTo) => {
+    if (replyTo.accept_reply) {
+      this.props.setReplyingMessage({ chatId, replyTo });
+    }
+  };
+
   render(){
-    const { chats, chatId } = this.props;
+    const { chats, chatId, filterTurkersMessages } = this.props;
+    let results = chats[chatId] && chats[chatId].results && chats[chatId].results;
+
+    if (results && filterTurkersMessages) {
+      results = results.filter(message => message.sender_is_turker)
+    }
+
     return (
       <div className="messages" ref={this.messagesBox}>
         {chats[chatId] && chats[chatId].nextPage ? (
-          <div className="next-page-section" onClick={this.getNextPage}>
+          <div className="next-page-section" onClick={this._getNextPage}>
             <p>Ver mensagens antigas</p>
           </div>
         ) : null}
-        {chats[chatId] && chats[chatId].results && chats[chatId].results.map((message, i) => (
-          <div className="message" key={i}>
-            <p className="sender">{message.sender_username}: </p>
+        {results && results.map((message, i) => (
+          <div
+            key={i}
+            onClick={() => this._setReplyingMessage(chatId, message)}
+            className={
+              `message
+              ${message.sender_is_turker ? ' turker-message' : ''}
+              ${message.accept_reply ? ' can-be-replied' : ''}`
+            }
+          >
+            {message.reply_to ? <MessageReply message={message.reply_to} /> : null}
+            <p className="sender">
+              <span>
+                {message.sender_username}:
+                <ReplyIcon />
+              </span>
+            </p>
             <p className="content">{message.content}</p>
           </div>
         ))}
@@ -66,7 +95,11 @@ class Messages extends React.Component {
   }
 }
 
-export default GetChatMessagesEvent.register({
+Messages = GetChatMessagesEvent.register({
   Component: Messages,
   props: ['chats']
 });
+
+Messages = SetReplyingMessageEvent.register({ Component: Messages });
+
+export default Messages;

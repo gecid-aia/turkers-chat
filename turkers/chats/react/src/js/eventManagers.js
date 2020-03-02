@@ -5,6 +5,8 @@ import {
   unionBy as _unionBy,
   sortBy as _orderBy,
 } from 'lodash';
+import { getCurrentStateFromEvent } from "rel-events/dist/helpers";
+import { SendMessageEvent } from "./events";
 
 export class GetChatMessagesEventManager {
   initialState = { chats: {} };
@@ -53,19 +55,26 @@ export class GetChatsEventManager {
 }
 
 export class SendMessageEventManager {
-  initialState = {}
-  call = ({ messagesUrl, message }) => {
+  initialState = { isLoading: false };
+
+  shouldDispatch = (appState, event) => {
+    const currentState = getCurrentStateFromEvent({ event: SendMessageEvent, appState });
+    return !currentState.isLoading;
+  }
+
+  call = ({ messagesUrl, message, replyTo }) => {
+    const body = { content: message };
+    if (replyTo) body.reply_to = replyTo.id;
+
     const requestData = {
       method: 'POST',
-      body: JSON.stringify({
-        content: message,
-      })
+      body: JSON.stringify(body)
     };
 
     return () => fetchFromApi(messagesUrl, requestData);
   };
 
-  onDispatch = state => state;
-  onFailure = state => state;
-  onSuccess = state => state;
+  onDispatch = state => ({...state, isLoading: true});
+  onFailure = state => ({...state, isLoading: false});
+  onSuccess = state => ({...state, isLoading: false});
 }

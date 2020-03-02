@@ -51,6 +51,6 @@
         "react-spinners-kit": "^1.9.0",
         "redux": "^4.0.1",
         "redux-thunk": "^2.3.0",
-        "rel-events": "^0.3.3"
+        "rel-events": "^0.4.4"
     }
 }
