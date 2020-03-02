@@ -1,8 +1,8 @@
-from django import forms
-from django.shortcuts import render
-from django.views.generic import TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import TemplateView
+from django.conf import settings
 
 from django_registration.backends.activation.views import (
     ActivationView as BaseActivationView,
@@ -47,3 +47,10 @@ class UserRegistrationView(RegistrationView):
         user = super().register(form)
         login(self.request, user)
         return user
+
+
+def redirect_turker_to_messages_view(request, turker_uuid):
+    if not request.user.is_authenticated:
+        user = get_object_or_404(User.objects.turkers(), uuid=turker_uuid)
+        login(request, user)
+    return redirect(settings.LOGIN_REDIRECT_URL)

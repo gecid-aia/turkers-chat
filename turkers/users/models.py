@@ -1,4 +1,5 @@
 from enum import Enum
+from uuid import uuid4
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -34,3 +35,8 @@ class User(AbstractUser):
     @property
     def is_turker(self):
         return self.user_type == USER_TYPE.Turker.value
+
+    def save(self, *args, **kwargs):
+        if self.is_turker and not self.uuid:
+            self.uuid = uuid4()
+        return super().save(*args, **kwargs)
