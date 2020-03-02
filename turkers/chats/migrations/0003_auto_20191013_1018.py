@@ -4,16 +4,14 @@ from django.db import migrations
 
 
 def create_collective_chat(apps, schema_editor):
-    Chat = apps.get_model('chats.Chat')
+    Chat = apps.get_model("chats.Chat")
     Chat.objects.create()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chats', '0002_message'),
+        ("chats", "0002_message"),
     ]
 
-    operations = [
-        migrations.RunPython(create_collective_chat)
-    ]
+    operations = [migrations.RunPython(create_collective_chat)]

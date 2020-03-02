@@ -7,7 +7,6 @@ from users.models import User
 
 
 class ChatManager(models.Manager):
-
     def get_collective_chat(self):
         return self.get(turker__isnull=True)
 
@@ -18,8 +17,10 @@ class ChatManager(models.Manager):
 class Chat(models.Model):
     objects = ChatManager()
 
-    turker = models.OneToOneField(User, unique=True, null=True, on_delete=models.CASCADE)
-    info = models.TextField(default='')
+    turker = models.OneToOneField(
+        User, unique=True, null=True, on_delete=models.CASCADE
+    )
+    info = models.TextField(default="")
 
     def save(self, *args, **kwargs):
         if self.turker_id and not self.turker.is_turker:
@@ -27,7 +28,9 @@ class Chat(models.Model):
         elif not self.turker_id:
             try:
                 chat = Chat.objects.get_collective_chat()
-                raise ValueError(f"Collective chat already exists with the id {chat.id}")
+                raise ValueError(
+                    f"Collective chat already exists with the id {chat.id}"
+                )
             except Chat.DoesNotExist:
                 pass
         return super().save(*args, **kwargs)
@@ -42,7 +45,7 @@ class Chat(models.Model):
 
     @property
     def messages_url(self):
-        return reverse('chats_api:chat_messages', args=[self.id])
+        return reverse("chats_api:chat_messages", args=[self.id])
 
     def user_can_post(self, user):
         if self.is_collective:
@@ -55,19 +58,21 @@ class Chat(models.Model):
 
 
 class Message(models.Model):
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name="messages")
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
     content = models.TextField(blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    reply_to = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    reply_to = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ["-timestamp"]
 
     @property
     def sender_username(self):
         if not self.sender:
-            return 'Anonymous'
+            return "Anonymous"
         return self.sender.username
 
     @property
@@ -79,8 +84,8 @@ class Message(models.Model):
     @property
     def turker_chat_url(self):
         if not self.sender or self.sender.is_regular:
-            return ''
-        return reverse('chats_api:chat', args=[self.sender.chat.id])
+            return ""
+        return reverse("chats_api:chat", args=[self.sender.chat.id])
 
     def user_can_reply(self, user):
         if not user:

@@ -6,9 +6,12 @@ from users.models import User
 
 class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'user_type')}
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "email", "password1", "password2", "user_type"),
+            },
         ),
     )
 

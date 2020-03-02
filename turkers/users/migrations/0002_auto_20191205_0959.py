@@ -7,13 +7,20 @@ import users.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='user_type',
-            field=models.CharField(choices=[(users.models.USER_TYPE('RG'), 'RG'), (users.models.USER_TYPE('TK'), 'TK')], default='RG', max_length=2),
+            model_name="user",
+            name="user_type",
+            field=models.CharField(
+                choices=[
+                    (users.models.USER_TYPE("RG"), "RG"),
+                    (users.models.USER_TYPE("TK"), "TK"),
+                ],
+                default="RG",
+                max_length=2,
+            ),
         ),
     ]
