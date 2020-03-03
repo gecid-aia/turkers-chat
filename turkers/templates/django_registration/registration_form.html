@@ -26,6 +26,10 @@
         <section class="p3 border table-cell align-middle">
           {% csrf_token %}
 
+          {% if form.non_field_errors %}
+            <div class="mb2">{{ form.non_field_errors }}</div>
+          {% endif %}
+
           {% for field in form %}
           {{ field.errors }}
           {{ field.label_tag }} {{ field }}
