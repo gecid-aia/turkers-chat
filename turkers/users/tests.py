@@ -12,7 +12,6 @@ class UserRegistrationFormTests(TestCase):
     def setUp(self):
         self.data = {
             "username": "foo",
-            "email": "foo@foo.com",
             "password1": "myverysecurepassword",
             "tos": True,
         }

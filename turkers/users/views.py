@@ -1,5 +1,4 @@
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -8,9 +7,9 @@ from django_registration.backends.activation.views import (
     ActivationView as BaseActivationView,
 )
 from django_registration.backends.one_step.views import RegistrationView
-from django_registration.forms import RegistrationForm
 
 from users.models import User
+from users.forms import UserRegistrationForm
 
 
 class AboutView(TemplateView):
@@ -23,21 +22,6 @@ class ActivationView(BaseActivationView):
         user = super().activate(*args, **kwargs)
         login(self.request, user)
         return user
-
-
-class UserRegistrationForm(RegistrationForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields.pop("email")
-
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = [
-            User.USERNAME_FIELD,
-            User.get_email_field_name(),
-            "password1",
-            "password2",
-        ]
 
 
 class UserRegistrationView(RegistrationView):
