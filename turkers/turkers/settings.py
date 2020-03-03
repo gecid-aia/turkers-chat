@@ -162,6 +162,9 @@ WEBPACK_LOADER = {
 }
 
 
+#reCaptcha
+GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY', cast=str)
+
 # Configure Django App for Heroku.
 import django_heroku
 
