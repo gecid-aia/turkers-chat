@@ -4,6 +4,8 @@
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 
   <script type="text/javascript">
+    // This JS is just a minor hack to resize g-recaptcha to match the iframe dimensions so
+    // the div border can be displayed with the correct widht and height
     var resizeCaptchaContainer = function() {
       let recaptcha = $('.g-recaptcha');
       let styles = recaptcha.children()[0].style;
