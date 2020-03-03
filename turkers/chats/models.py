@@ -92,6 +92,9 @@ class Message(models.Model):
             return False
         return user.is_turker
 
+    def __str__(self):
+        return f'MSG: {self.content} / FROM: {self.sender_username}'
+
 
 @receiver(post_save, sender=User)
 def create_turker_chat(sender, instance, created, *args, **kwargs):

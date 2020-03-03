@@ -12,7 +12,6 @@ class UserRegistrationFormTests(TestCase):
     def setUp(self):
         self.data = {
             "username": "foo",
-            "email": "foo@foo.com",
             "password1": "myverysecurepassword",
             "tos": True,
         }
@@ -40,8 +39,8 @@ class RedirectTurkerUserToMessagesTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
-        assert '_auth_user_id' in self.client.session
-        assert int(self.client.session['_auth_user_id']) == self.turker_user.pk
+        assert "_auth_user_id" in self.client.session
+        assert int(self.client.session["_auth_user_id"]) == self.turker_user.pk
 
     def test_404_if_user_does_not_exist(self):
         self.turker_user.delete()
@@ -65,5 +64,5 @@ class RedirectTurkerUserToMessagesTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
-        assert '_auth_user_id' in self.client.session
-        assert int(self.client.session['_auth_user_id']) == user.pk
+        assert "_auth_user_id" in self.client.session
+        assert int(self.client.session["_auth_user_id"]) == user.pk

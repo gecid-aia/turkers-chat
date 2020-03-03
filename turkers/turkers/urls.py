@@ -7,7 +7,11 @@ from django.views.generic.base import TemplateView
 from django_registration.backends.activation.views import RegistrationView
 
 from users.forms import UserRegistrationForm
-from users.views import AboutView, UserRegistrationView, redirect_turker_to_messages_view
+from users.views import (
+    AboutView,
+    UserRegistrationView,
+    redirect_turker_to_messages_view,
+)
 
 urlpatterns = [
     path(r"", include("chats.urls", namespace="chats")),
@@ -32,9 +36,7 @@ urlpatterns = [
         name="django_registration_register",
     ),
     path(r"", include("django_registration.backends.one_step.urls")),
-
     path(r"", include("django.contrib.auth.urls")),
-
     path(
         "access/<uuid:turker_uuid>/",
         redirect_turker_to_messages_view,

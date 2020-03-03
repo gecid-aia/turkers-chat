@@ -9,6 +9,9 @@
   <link href="../static/about.css" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.typotheque.com/WF-031670-010387.css" type="text/css" />
   {% render_bundle "main" "css" %}
+
+  {% block extra_head %}
+  {% endblock %}
 </head>
 
 <body {% if request.path == '/login/' or request.path == '/register/' %}class="inverted"{% endif %}>
