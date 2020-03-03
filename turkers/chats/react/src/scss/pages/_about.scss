@@ -1,6 +1,6 @@
 #about-text {
   position: relative;
-  width: 50%;
+  width: 60%;
   height: 70%;
   top: 15%;
   margin: 0 auto;
@@ -13,8 +13,8 @@
   #about-text {
     display: block;
     overflow-y: scroll;
-    position: absolute;
+    position: relative;
     left: 5%;
-    width: 90%;
+    width: 60%;
   }
 }
