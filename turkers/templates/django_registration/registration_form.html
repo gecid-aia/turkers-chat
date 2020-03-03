@@ -1,5 +1,19 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+
+  <script type="text/javascript">
+    var resizeCaptchaContainer = function() {
+      let recaptcha = $('.g-recaptcha');
+      let styles = recaptcha.children()[0].style;
+      recaptcha.width(styles.width).height(styles.height);
+    };
+  </script>
+
+  <script src="https://www.google.com/recaptcha/api.js?onload=resizeCaptchaContainer" async defer></script>
+{% endblock %}
+
 {% block content %}
 <section id="login-page">
   <section class="vertically-aligned">
@@ -17,7 +31,9 @@
           {{ field.label_tag }} {{ field }}
           {% endfor %}
 
-          <!--<p><b>Google Captcha Here!</b></p>-->
+          <div class="mt2 mb1 vertically-aligned grayscale">
+            <div class="g-recaptcha border" style="display: inline-block;" data-size="normal" data-sitekey="6Ldkc94UAAAAAH6aUSI_53rml4OthTSjscQch9DL"></div>
+          </div>
         </section>
 
         <input class="underline bold p2 ml3 mt8 table-cell align-middle" type="submit" value="Confirm" />
