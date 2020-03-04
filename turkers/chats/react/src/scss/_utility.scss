@@ -47,6 +47,14 @@
 .mb8 { margin-bottom: 8rem; }
 .ml8 { margin-left: 8rem; }
 
+.p2  { padding: 2rem; }
+.px2 { padding-left: 2rem; padding-right: 2rem; }
+.py2 { padding-top: 2rem; padding-bottom: 2rem; }
+.pt2 { padding-top: 2rem; }
+.pr2 { padding-right: 2rem; }
+.pb2 { padding-bottom: 2rem; }
+.pl2 { padding-left: 2rem; }
+
 .p5  { padding: 5rem; }
 .px5 { padding-left: 5rem; padding-right: 5rem; }
 .py5 { padding-top: 5rem; padding-bottom: 5rem; }
@@ -78,6 +86,16 @@
 .pr8 { padding-right: 8rem; }
 .pb8 { padding-bottom: 8rem; }
 .pl8 { padding-left: 8rem; }
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    display: inherit;
+  }
+}
 
 .inverted {
   filter: invert(100%);
