@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 from pathlib import Path
+import sentry_sdk
 
 BASE_DIR = Path(__file__).parents[1]
 
@@ -164,6 +165,14 @@ WEBPACK_LOADER = {
 
 #reCaptcha
 GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY', cast=str)
+
+
+# Config sentry
+from sentry_sdk.integrations.django import DjangoIntegration
+sentry_sdk.init(
+    dsn=config('SENTRY_DSN', cast=str, default=''),
+    integrations=[DjangoIntegration()]
+)
 
 # Configure Django App for Heroku.
 import django_heroku
