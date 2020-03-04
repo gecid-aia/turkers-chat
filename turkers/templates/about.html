@@ -1,4 +1,7 @@
 {% extends 'base.html'%}
+
+{% block extra_title %}: About{% endblock %}
+
 {% block content %}
 <a id="login-link" class="bold" href="{% url 'chats:index' %}">EXCHANGES w/ <span class="underline">Turkers</span></a>
 <p id="about-link" class="bold strike">About</p>
