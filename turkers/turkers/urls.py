@@ -9,6 +9,7 @@ from django_registration.backends.activation.views import RegistrationView
 from users.forms import UserRegistrationForm
 from users.views import (
     AboutView,
+    ToSView,
     UserRegistrationView,
     redirect_turker_to_messages_view,
 )
@@ -44,6 +45,7 @@ urlpatterns = [
     ),
     path("admin/", admin.site.urls),
     path("about/", AboutView.as_view(), name="about"),
+    path("tos/", ToSView.as_view(), name="tos"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

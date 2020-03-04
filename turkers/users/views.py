@@ -19,6 +19,10 @@ class AboutView(TemplateView):
     template_name = "about.html"
 
 
+class ToSView(TemplateView):
+    template_name = "tos.html"
+
+
 # Required by activation backend
 class ActivationView(BaseActivationView):
     def activate(self, *args, **kwargs):

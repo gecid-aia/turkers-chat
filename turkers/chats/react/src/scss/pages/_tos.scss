@@ -1,0 +1,21 @@
+#tos-text {
+  position: relative;
+  width: 60%;
+  height: 70%;
+  top: 15%;
+  margin: 0 auto;
+  text-align: center;
+
+  p { line-height: 1.8; margin-bottom: 1rem; }
+  .title { font-size: 3rem; padding: 1rem 0;}
+}
+
+@media (max-width: 1400px) {
+  #tos-text {
+    display: block;
+    overflow-y: scroll;
+    position: relative;
+    left: 5%;
+    width: 60%;
+  }
+}
