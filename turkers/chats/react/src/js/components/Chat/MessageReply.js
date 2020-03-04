@@ -9,7 +9,7 @@ export default function MessageReply({ message }) {
       <span><ReplyIcon /></span>
       <p className="title">Reply to</p>
       <p className="sender">{message.sender_username}</p>
-      <p>{_truncate(message.content)}</p>
+      <p>{_truncate(message.content,  {'length': 60, 'separator': /,? +/})}</p>
     </div>
   );
 }
