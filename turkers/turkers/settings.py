@@ -136,9 +136,14 @@ STATIC_URL = "/static/"
 
 
 EMAIL_BACKEND = config(
-    "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+    "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend", cast=str
 )
 EMAIL_FILE_PATH = "/tmp"
+ANYMAIL = {
+    "SENDGRID_API_KEY": config("SENDGRID_API_KEY", default='', cast=str).strip(),
+}
+DEFAULT_FROM_EMAIL = 'Exchanges w/Turkers <contact@withturkers.net>'
+EMAIL_SUBJECT_PREFIX = '[Exchanges w/Turkers] '
 
 
 ACCOUNT_ACTIVATION_DAYS = config("ACCOUNT_ACTIVATION_DAYS", default=15, cast=int)
