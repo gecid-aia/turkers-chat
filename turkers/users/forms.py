@@ -7,7 +7,7 @@ from users.models import User
 class UserRegistrationForm(RegistrationFormTermsOfService):
     tos = forms.BooleanField(
         required=True,
-        label="You must agree with the ToS (discutir)",  # noqa
+        label="You must agree with the Terms of Service",  # noqa
     )
 
     def __init__(self, *args, **kwargs):

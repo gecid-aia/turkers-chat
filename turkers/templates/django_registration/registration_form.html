@@ -32,10 +32,24 @@
             <div class="mb2">{{ form.non_field_errors }}</div>
           {% endif %}
 
-          {% for field in form %}
-          {{ field.errors }}
-          {{ field.label_tag }} {{ field }}
-          {% endfor %}
+          {% with form.username as field %}
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+          {% endwith %}
+
+          {% with form.password1 as field %}
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+          {% endwith %}
+
+          <div id="tos-confirmation" class="mt2 vertically-aligned">
+            {% with form.tos as field %}
+              {{ field.errors }}
+              {{ field }}
+              <span>I agree with the <a class="underline" target="_blank" href="{% url "tos" %}">Terms of Service</a></span>
+            {% endwith %}
+          </div>
+
 
           <div class="mt2 mb1 vertically-aligned grayscale">
             <div class="g-recaptcha border" style="display: inline-block;" data-size="normal" data-sitekey="6Ldkc94UAAAAAH6aUSI_53rml4OthTSjscQch9DL"></div>

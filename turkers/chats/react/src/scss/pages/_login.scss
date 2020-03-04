@@ -7,4 +7,18 @@
     br { display: none; }
     input + label { margin-top: 1em; }
   }
+
+  #tos-confirmation {
+    text-align: center;
+    display: block;
+
+    * {
+      display: inline-block;
+    }
+
+    input {
+      width: auto;
+      padding: 0;
+    }
+  }
 }
