@@ -1,11 +1,11 @@
 {% extends 'base.html'%}
 {% block content %}
-<a id="login-link" class="bold" href="/login/">EXCHANGES w/ <span class="underline">Turkers</span></a>
+<a id="login-link" class="bold" href="{% url 'chats:index' %}">EXCHANGES w/ <span class="underline">Turkers</span></a>
 <p id="about-link" class="bold strike">About</p>
 {% if request.user.is_authenticated %}
 <p id="user-info">Your are logged in as <span class="underline bold">{{ request.user.username }}</span></p>
 {% endif %}
-<a id="return-link" href="/" class="bold">Return to Chats</a>
+<a id="return-link" href="{% url 'chats:index' %}" class="bold">Return to Chats</a>
 <section id="about-text" class="vertically-aligned">
   <section class="vertical-wrapper">
     <span class="bold title">About</span>
