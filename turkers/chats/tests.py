@@ -291,7 +291,7 @@ class ListChatMessagesEndpointTests(TestCase):
         self.user.user_type = USER_TYPE.Turker.value
         self.user.save()
 
-        data = {"content": "new msg", "reply_to": msg.id}
+        data = {"content": "new msg", "reply_to": int(msg.id)}
         response = self.client.post(self.url, data=data)
         new_msg = Message.objects.latest("id")
         expected = MessageSerializer(
