@@ -72,13 +72,14 @@ export default class ChatBox extends React.Component {
           `}
         >
 
-          <div className="header">
+          <div title="Click and drag" className="header">
             <strong>{title.toUpperCase()}</strong>
 
             <div className="chat-controls">
-              <span onClick={this._toggleFilterMessages}><FilterMessagesIcon /></span>
-              {info && info.length ? <span onClick={this._toggleInfo}>?</span> : null}
-              <span onClick={this._toggleChat}>{showChat ? '—' : '|'}</span>
+              <span onClick={this._toggleFilterMessages}><FilterMessagesIcon filterTurkersMessages={filterTurkersMessages} /></span>
+              {info && info.length && showInfo? <span role="img" title="Hide bio" onClick={this._toggleInfo}>?</span> : null}
+              {info && info.length && !showInfo? <span role="img" title="Show bio" onClick={this._toggleInfo}>?</span> : null}
+              <span title={showChat ? 'Collapse chat' : 'Expand chat'} onClick={this._toggleChat}>{showChat ? '—' : '|'}</span>
             </div>
           </div>
 
