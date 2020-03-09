@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from better_profanity import profanity
 
 from chats.models import Message, Chat
 
@@ -32,6 +33,9 @@ class NewChatMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ["sender", "content", "chat", "reply_to"]
+
+    def validate_content(self, content):
+        return profanity.censor(content)
 
     def validate(self, data):
         reply_to = data.get("reply_to")
