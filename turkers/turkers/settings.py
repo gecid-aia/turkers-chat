@@ -185,28 +185,30 @@ if not DEBUG:
 
 
 # Cache configuration
-CACHE_BACKEND = config(
-    'DJANGO_CACHE_BACKEND',
-    default='django.core.cache.backends.filebased.FileBasedCache'
-)
-CACHE_LOCATION = config('DJANGO_CACHE_LOCATION', default='/tmp/', cast=str)
+REDIS_URL = config('REDISCLOUD_URL', default='/tmp/', cast=str)
 CACHE_DEFAULT_TIMEOUT = 60 * 60 * 24  # 1 day
 
-CACHES = {
-    "default": {
-        "TIMEOUT": CACHE_DEFAULT_TIMEOUT,
-        "BACKEND": CACHE_BACKEND,
-        "LOCATION": CACHE_LOCATION,
-        "KEY_PREFIX": "dj-cache-"
+if REDIS_URL.startswith('redis'):
+    CACHES = {
+        "default": {
+            "TIMEOUT": CACHE_DEFAULT_TIMEOUT,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": REDIS_URL,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            },
+            "KEY_PREFIX": "dj-cache-"
+        }
     }
-}
-
-if 'RedisCache' in CACHE_BACKEND:
-    CACHES['default'].update({
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-    })
+else:
+    CACHES = {
+        "default": {
+            "TIMEOUT": CACHE_DEFAULT_TIMEOUT,
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": '/tmp/',
+            "KEY_PREFIX": "dj-cache-"
+        }
+    }
 
 
 # Configure Django App for Heroku.
