@@ -76,7 +76,7 @@ export default class ChatBox extends React.Component {
             <strong>{title.toUpperCase()}</strong>
 
             <div className="chat-controls">
-              <span onClick={this._toggleFilterMessages}><FilterMessagesIcon filterTurkersMessages={filterTurkersMessages} /></span>
+              {!is_collective ? <span onClick={this._toggleFilterMessages}><FilterMessagesIcon filterTurkersMessages={filterTurkersMessages} /></span> : null}
               {info && info.length && showInfo? <span role="img" title="Open the chat window" onClick={this._toggleInfo}>?</span> : null}
               {info && info.length && !showInfo? <span role="img" title="Read the turker profile" onClick={this._toggleInfo}>?</span> : null}
               <span title={showChat ? 'Minimize the chat window' : 'Open the chat window'} onClick={this._toggleChat}>{showChat ? '—' : '|'}</span>
