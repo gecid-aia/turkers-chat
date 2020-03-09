@@ -179,6 +179,11 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    MIDDLEWARE.insert(0, 'django.middleware.security.SecurityMiddleware')
+
 # Configure Django App for Heroku.
 import django_heroku
 
