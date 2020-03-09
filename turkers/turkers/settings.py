@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import django_heroku
 import os
+import sentry_sdk
 from decouple import config
 from pathlib import Path
-import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 BASE_DIR = Path(__file__).parents[1]
 
@@ -105,12 +107,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -168,12 +168,11 @@ WEBPACK_LOADER = {
 }
 
 
-#reCaptcha
+# reCaptcha
 GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY', cast=str)
 
 
 # Config sentry
-from sentry_sdk.integrations.django import DjangoIntegration
 sentry_sdk.init(
     dsn=config('SENTRY_DSN', cast=str, default=''),
     integrations=[DjangoIntegration()]
@@ -184,7 +183,6 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     MIDDLEWARE.insert(0, 'django.middleware.security.SecurityMiddleware')
 
-# Configure Django App for Heroku.
-import django_heroku
 
+# Configure Django App for Heroku.
 django_heroku.settings(locals())
