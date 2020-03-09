@@ -1,4 +1,8 @@
+from urllib.parse import urlencode
+
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
 
 from chats.models import Chat, Message
 
@@ -11,7 +15,14 @@ class ChatAdmin(admin.ModelAdmin):
     model = Chat
     has_add_permission = block_op
     readonly_fields = ["turker"]
-    list_display = ["title", "info"]
+    list_display = ["title", "info", "view_messages"]
+
+    def view_messages(self, obj):
+        qs = urlencode({'chat__id__exact': obj.id})
+        link = reverse("admin:chats_message_changelist") + '?' + qs
+        tag = '<a href="%s">%s</a>' % (link, "View messages")
+        return format_html(tag)
+    view_messages.short_description = 'Chat messages URLs'
 
 
 class MessagesWithProfanityFilter(admin.SimpleListFilter):
