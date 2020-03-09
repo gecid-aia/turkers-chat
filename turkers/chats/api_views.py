@@ -1,8 +1,7 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from django.http import Http404
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 
 from chats.models import Chat
@@ -27,14 +26,24 @@ class ChatEndpoint(RetrieveAPIView):
 class ListChatMessagesEndpoint(ListAPIView):
     serializer_class = MessageSerializer
 
+    @property
+    def chat_cache_key(self):
+        return f'chat-{self.kwargs["chat_id"]}-messages'
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["user"] = self.request.user
         return context
 
     def get_queryset(self):
-        chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
-        return chat.messages.select_related("sender", "reply_to").all()
+        messages = cache.get(self.chat_cache_key)
+
+        if not messages:
+            chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
+            messages = chat.messages.select_related("sender", "reply_to").all()
+            cache.set(self.chat_cache_key, messages)
+
+        return messages
 
     def post(self, request, chat_id):
         data = {
@@ -48,6 +57,7 @@ class ListChatMessagesEndpoint(ListAPIView):
         input_serializer.is_valid(raise_exception=True)
 
         new_msg = input_serializer.save()
+        cache.delete(self.chat_cache_key)
         return Response(self.get_serializer(instance=new_msg).data, status=201)
 
 
