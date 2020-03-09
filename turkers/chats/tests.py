@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.urls import reverse
 
 from chats.models import Chat, Message
-from chats.serializers import MessageSerializer, ChatSerializer
+from chats.serializers import MessageSerializer, ChatSerializer, NewChatMessageSerializer
 from users.models import User, USER_TYPE
 
 
@@ -196,6 +196,33 @@ class ChatSerializerTests(TestCase):
         serializer = ChatSerializer(instance=chat, context={"user": self.turker})
 
         assert expected == serializer.data
+
+
+class NewChatMessageSerializerTests(TestCase):
+    def setUp(self):
+        self.user = baker.make(User, user_type=USER_TYPE.Turker.value)
+        self.chat = Chat.objects.get_collective_chat()
+        self.data = {
+            'sender': self.user.id,
+            'content': 'fooooo',
+            'chat': self.chat.id,
+        }
+
+    def test_valid_message(self):
+        serializer = NewChatMessageSerializer(data=self.data)
+
+        assert serializer.is_valid()
+
+    def test_clean_message_if_profanity(self):
+        self.data['content'] = 'alguma coisa assada'
+        serializer = NewChatMessageSerializer(data=self.data)
+        assert serializer.is_valid()
+        assert serializer.data['content'] == 'alguma coisa assada'
+
+        self.data['content'] = 'your ass'
+        serializer = NewChatMessageSerializer(data=self.data)
+        assert serializer.is_valid()
+        assert serializer.data['content'] == 'your ****'
 
 
 class ChatEndpointTests(TestCase):

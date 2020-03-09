@@ -15,3 +15,4 @@ django-anymail==7.0.0
 django-redis==4.9.0
 redis==2.10.6
 newrelic==5.8.0.136
+better-profanity==0.5.0
