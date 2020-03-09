@@ -186,7 +186,8 @@ if not DEBUG:
 
 # Cache configuration
 CACHE_BACKEND = config(
-    'DJANGO_CACHE_BACKEND', default='django.core.cache.backends.filebased.FileBasedCache'
+    'DJANGO_CACHE_BACKEND',
+    default='django.core.cache.backends.filebased.FileBasedCache'
 )
 CACHE_LOCATION = config('DJANGO_CACHE_LOCATION', default='/tmp/')
 CACHE_DEFAULT_TIMEOUT = 60 * 60 * 24  # 1 day
