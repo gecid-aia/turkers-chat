@@ -365,6 +365,12 @@ class ListChatMessagesEndpointTests(TestCase):
 
         assert 201 == response.status_code
 
+    def test_400_if_message_is_to_long(self):
+        response = self.client.post(self.url, data={"content": "a" * 1025})
+
+        assert 400 == response.status_code
+        assert "content" in response.json()
+
 
 class ListUserAvailableChatsTests(TestCase):
     def setUp(self):

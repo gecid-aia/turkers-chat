@@ -27,6 +27,8 @@ class MessageSerializer(BaseMessageSerializer):
 
 
 class NewChatMessageSerializer(serializers.ModelSerializer):
+    content = serializers.CharField(required=True, max_length=1024)
+
     class Meta:
         model = Message
         fields = ["sender", "content", "chat", "reply_to"]

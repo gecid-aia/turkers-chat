@@ -39,6 +39,7 @@ let MessageInput = class extends React.Component {
         ) : null}
         <input
           type="text"
+          maxlength="1024"
           value={this.state.message}
           onChange={this._handleMessageTyping}
           onKeyPress={this._handleKeyPress}
