@@ -2,6 +2,7 @@ import pytest
 from model_bakery import baker
 from rest_framework.test import APITestCase as TestCase
 
+from django.core.cache import cache
 from django.urls import reverse
 
 from chats.models import Chat, Message
@@ -233,6 +234,7 @@ class ListChatMessagesEndpointTests(TestCase):
         self.turker_user = baker.make(User, user_type=USER_TYPE.Turker.value)
         self.chat = self.turker_user.chat
         self.url = reverse("chats_api:chat_messages", args=[self.chat.id])
+        cache.clear()
 
     def test_login_required(self):
         self.client.logout()
@@ -249,6 +251,8 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 404 == response.status_code
 
     def test_get_paginated_messages_data(self):
+        cache_key = f'chat-{self.chat.id}-messages'
+        assert cache.get(cache_key) is None
         messages = baker.make(Message, chat=self.chat, _quantity=42)
 
         response = self.client.get(self.url)
@@ -261,6 +265,9 @@ class ListChatMessagesEndpointTests(TestCase):
         assert expected == data["results"]
         assert 42 == data["count"]
         assert "next" in data
+        cached_messages = cache.get(cache_key, default=[])
+        for message in messages:
+            assert message in cached_messages
 
     def test_ensure_the_logged_user_is_being_used_in_context(self):
         self.user.user_type = USER_TYPE.Turker.value
@@ -273,6 +280,11 @@ class ListChatMessagesEndpointTests(TestCase):
         assert data["results"][0]["accept_reply"] is True
 
     def test_add_new_message_on_post(self):
+        cache_key = f'chat-{self.chat.id}-messages'
+        baker.make(Message, chat=self.chat, _quantity=42)  # add messages to the chat
+        self.client.get(self.url)  # populates cache
+        assert cache.get(cache_key)  # ensures cache is populated
+
         response = self.client.post(self.url, data={"content": "new msg"})
         new_msg = Message.objects.first()
         expected = MessageSerializer(
@@ -285,6 +297,7 @@ class ListChatMessagesEndpointTests(TestCase):
         assert self.user == new_msg.sender
         assert self.chat == new_msg.chat
         assert new_msg.reply_to is None
+        assert cache.get(cache_key) is None  # clears cache after new msg
 
     def test_reply_to_a_message(self):
         msg = baker.make(Message, chat=self.chat)
