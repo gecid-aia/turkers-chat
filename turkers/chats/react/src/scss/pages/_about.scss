@@ -4,7 +4,7 @@
   height: 70%;
   top: 15%;
   margin: 0 auto;
-  overflow-y: scroll;
+  overflow: auto;
   display: block;
 
   p { line-height: 1.8; margin-bottom: 1rem; }
@@ -12,11 +12,15 @@
 
   a {text-decoration: underline;}
 }
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
 
 @media (max-width: 1400px) {
   #about-text {
     display: block;
-    overflow-y: scroll;
+    overflow: auto;
     position: relative;
     left: 5%;
     width: 60%;
