@@ -4,9 +4,13 @@
   height: 70%;
   top: 15%;
   margin: 0 auto;
+  overflow-y: scroll;
+  display: block;
 
   p { line-height: 1.8; margin-bottom: 1rem; }
   .title { float: left; font-size: 3rem; padding: 1rem 0; }
+
+  a {text-decoration: underline;}
 }
 
 @media (max-width: 1400px) {
