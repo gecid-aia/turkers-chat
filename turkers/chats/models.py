@@ -28,9 +28,10 @@ class Chat(models.Model):
         elif not self.turker_id:
             try:
                 chat = Chat.objects.get_collective_chat()
-                raise ValueError(
-                    f"Collective chat already exists with the id {chat.id}"
-                )
+                if chat.id != self.id:
+                    raise ValueError(
+                        f"Collective chat already exists with the id {chat.id}"
+                    )
             except Chat.DoesNotExist:
                 pass
         return super().save(*args, **kwargs)
