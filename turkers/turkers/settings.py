@@ -185,7 +185,7 @@ if not DEBUG:
 
 
 # Cache configuration
-REDIS_URL = config('REDISCLOUD_URL', default='/tmp/', cast=str)
+REDIS_URL = config('REDISCLOUD_URL', '')
 CACHE_DEFAULT_TIMEOUT = 60 * 60 * 24  # 1 day
 
 if REDIS_URL.startswith('redis'):
@@ -195,9 +195,9 @@ if REDIS_URL.startswith('redis'):
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": REDIS_URL,
             "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient"
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
-            "KEY_PREFIX": "dj-cache-"
+            "KEY_PREFIX": "dj-cache-",
         }
     }
 else:
