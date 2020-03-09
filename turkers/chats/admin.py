@@ -14,9 +14,29 @@ class ChatAdmin(admin.ModelAdmin):
     list_display = ["title", "info"]
 
 
+class MessagesWithProfanityFilter(admin.SimpleListFilter):
+    title = 'Messages with swear words'
+    parameter_name = 'profanity'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('', 'All messages'),
+            ('swear', 'With swear words'),
+            ('no_swear', 'Without swear words'),
+        )
+
+    def queryset(self, request, queryset):
+        value = self.value()
+
+        if value == 'swear':
+            return queryset.filter(content__icontains='***')
+        elif value == 'no_swear':
+            return queryset.exclude(content__icontains='***')
+
+
 class MessageAdmin(admin.ModelAdmin):
     search_fields = ['content', 'sender__username']
-    list_filter = ['chat']
+    list_filter = ['chat', MessagesWithProfanityFilter]
     model = Message
     has_add_permission = block_op
     readonly_fields = ['chat', 'sender', 'content', 'timestamp', 'reply_to']
