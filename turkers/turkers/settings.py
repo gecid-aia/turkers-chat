@@ -16,6 +16,7 @@ import sentry_sdk
 from decouple import config
 from pathlib import Path
 from sentry_sdk.integrations.django import DjangoIntegration
+from better_profanity import profanity
 
 BASE_DIR = Path(__file__).parents[1]
 
@@ -209,6 +210,14 @@ else:
             "KEY_PREFIX": "dj-cache-"
         }
     }
+
+
+# Load badwords list
+words_list = Path(BASE_DIR, 'turkers', 'profanity_wordlist.txt')
+assert words_list.exists()
+with open(words_list) as fd:
+    bad_words = [l.strip() for l in fd.readlines() if l.strip()]
+    profanity.load_censor_words(bad_words)
 
 
 # Configure Django App for Heroku.
