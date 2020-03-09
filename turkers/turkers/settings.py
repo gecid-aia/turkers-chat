@@ -196,9 +196,6 @@ CACHES = {
         "TIMEOUT": CACHE_DEFAULT_TIMEOUT,
         "BACKEND": CACHE_BACKEND,
         "LOCATION": CACHE_LOCATION,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
         "KEY_PREFIX": "dj-cache-"
     }
 }
