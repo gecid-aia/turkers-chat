@@ -22,7 +22,7 @@ def run():
         email_content = f"""
 Hi {turker.username},
 
-You have {private_messages} in you private chat and {turkers_messages} messages in the turkers chat since your last interactions.
+You have {private_messages} message(s) in you private chat and {turkers_messages} message(s) in the turkers chat since your last interactions.
 
 Click in the link bellow to go to the website and reply to the new messages:
 
@@ -31,8 +31,6 @@ https://turkers.aarea.co/
 Thanks,
 Exchange w/Turkers
 """.strip()
-
-        print(email_content)
 
         send_mail(
             'Your daily report from Exchange w/ Turkers',
