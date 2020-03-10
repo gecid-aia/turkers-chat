@@ -19,6 +19,7 @@ let MessageInput = class extends React.Component {
     if (e.key === 'Enter') {
       const { message }= this.state;
       const { messagesUrl, replyTo, chatId } = this.props;
+      const foo = 42;
       this.setState({ message: '' }, () => {
         if (replyTo[chatId]) {
           this.props.setReplyingMessage();
