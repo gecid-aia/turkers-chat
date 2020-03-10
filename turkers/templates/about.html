@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load static %}
 
 {% block extra_title %}: About{% endblock %}
 
@@ -31,7 +32,7 @@ In order to establish “Exch w/ Turkers”, we published an open call on the Am
 The website’s structure is based on the logic of chats from the 1990s, a time when the internet was not yet dominated by big platforms and surveillance capitalism. One may start a chat with these professionals at any given moment. Before asking your question, we suggest you read the worker’s profile by clicking on “?” – this will allow you to learn more about his or her context.
     </p>
 
-    <p>Rejecting the instantaneousness of current mediums of communication, the Turkers will not be online and available to answer the questions in real time. In order to take part in the website, a contract was drawn out containing a set of commitments and a code of conduct policy which must be closely followed. This contract can be found <a href="#" target="_blank">here</a>.</p>
+    <p>Rejecting the instantaneousness of current mediums of communication, the Turkers will not be online and available to answer the questions in real time. In order to take part in the website, a contract was drawn out containing a set of commitments and a code of conduct policy which must be closely followed. This contract can be found <a href="{% static 'pdfs/EwT_Contract.pdf'%}" target="_blank">here</a>.</p>
 
     <p>
 <span class="bold">Why does this matter?</span><br/>
@@ -46,7 +47,7 @@ The website’s structure is based on the logic of chats from the 1990s, a time 
 
     <p>The project will be on show at the <a href="https://www.aarea.co" target="_blank">www.aarea.co</a> from March 13 to 27, allowing visitors to communicate with the Turkers. After this date, the site will be transferred to exchanges.withturkers.net, where research on Turkers will continue to be conducted.</p>
 
-    <p>* For more information of Turkers, we recommend <a href="#" target="_blank">this reading list</a>.</p>
+    <p>* For more information of Turkers, we recommend <a href="{% static 'pdfs/EwT_ReferenceList.pdf'%}" target="_blank">this reading list</a>.</p>
 
   </section>
 </section>
