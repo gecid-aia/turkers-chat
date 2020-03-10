@@ -2,8 +2,7 @@
   "presets": [
     ["@babel/env", {
       "targets": {
-        "browsers": "last 3 versions",
-        "node": "current"
+        "browsers": "IE 11",
       }
     }],
     "@babel/react"
