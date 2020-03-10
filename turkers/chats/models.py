@@ -42,7 +42,7 @@ class Chat(models.Model):
 
     @property
     def title(self):
-        return "Turkers Chat" if self.is_collective else self.turker.username
+        return "Only Turkers" if self.is_collective else self.turker.username
 
     @property
     def messages_url(self):

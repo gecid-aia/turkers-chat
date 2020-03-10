@@ -141,7 +141,7 @@ class ChatSerializerTests(TestCase):
         chat = Chat.objects.get_collective_chat()
 
         expected = {
-            "title": "Turkers Chat",
+            "title": "Only Turkers",
             "info": "",
             "id": chat.id,
             "messages_url": reverse("chats_api:chat_messages", args=[chat.id]),
@@ -156,7 +156,7 @@ class ChatSerializerTests(TestCase):
         chat = Chat.objects.get_collective_chat()
 
         expected = {
-            "title": "Turkers Chat",
+            "title": "Only Turkers",
             "info": "",
             "id": chat.id,
             "messages_url": reverse("chats_api:chat_messages", args=[chat.id]),
