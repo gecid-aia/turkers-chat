@@ -48,6 +48,10 @@ class Chat(models.Model):
     def messages_url(self):
         return reverse("chats_api:chat_messages", args=[self.id])
 
+    @property
+    def messages_cache_key(self):
+        return f'chat-{self.id}-messages'
+
     def user_can_post(self, user):
         if self.is_collective:
             return user.is_turker

@@ -32,38 +32,35 @@ class ListChatMessagesEndpoint(ListAPIView):
             self.throttle_scope = 'new_messages'
         return super(ListChatMessagesEndpoint, self).get_throttles()
 
-    @property
-    def chat_cache_key(self):
-        return f'chat-{self.kwargs["chat_id"]}-messages'
-
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["user"] = self.request.user
         return context
 
     def get_queryset(self):
-        messages = cache.get(self.chat_cache_key)
+        chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
+        messages = cache.get(chat.messages_cache_key)
 
         if not messages:
-            chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
             messages = chat.messages.select_related("sender", "reply_to").all()
-            cache.set(self.chat_cache_key, messages)
+            cache.set(chat.messages_cache_key, messages)
 
         return messages
 
     def post(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
         data = {
             "content": request.data.get("content", "").strip(),
             "reply_to": str(request.data.get("reply_to", "")).strip(),
             "sender": request.user.id,
-            "chat": get_object_or_404(Chat, id=self.kwargs["chat_id"]).id,
+            "chat": chat.id,
         }
 
         input_serializer = NewChatMessageSerializer(data=data)
         input_serializer.is_valid(raise_exception=True)
 
         new_msg = input_serializer.save()
-        cache.delete(self.chat_cache_key)
+        cache.delete(chat.messages_cache_key)
         return Response(self.get_serializer(instance=new_msg).data, status=201)
 
 
