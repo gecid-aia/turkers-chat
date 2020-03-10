@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 from django.contrib import admin
+from django.core.cache import cache
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -56,6 +57,18 @@ class MessageAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('sender', 'chat')
+
+    def delete_model(self, request, message):
+        chat = message.chat
+        response = super().delete_model(request, message)
+        cache.delete(chat.messages_cache_key)
+        return response
+
+    def delete_queryset(self, request, queryset):
+        chats = set([m.chat for m in queryset])
+        queryset.delete()
+        for chat in chats:
+            cache.delete(chat.messages_cache_key)
 
 
 admin.site.register(Chat, ChatAdmin)
