@@ -159,6 +159,14 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 20,
     "DEFAULT_AUTHENTICATION_CLASSES": ("turkers.authentication.SessionAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'new_messages': '12/minute',
+        'default_scope': '100/second',
+        # valor default alto para não forçar limite para além da escrita de novas mensagens
+    }
 }
 
 WEBPACK_LOADER = {

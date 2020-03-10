@@ -25,6 +25,12 @@ class ChatEndpoint(RetrieveAPIView):
 
 class ListChatMessagesEndpoint(ListAPIView):
     serializer_class = MessageSerializer
+    throttle_scope = 'default_scope'
+
+    def get_throttles(self):
+        if self.request.method.lower() == 'post':
+            self.throttle_scope = 'new_messages'
+        return super(ListChatMessagesEndpoint, self).get_throttles()
 
     @property
     def chat_cache_key(self):
