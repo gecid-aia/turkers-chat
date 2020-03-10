@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse
 from django.views.generic.base import TemplateView
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 
 from django_registration.backends.activation.views import RegistrationView
 
@@ -13,6 +15,14 @@ from users.views import (
     UserRegistrationView,
     redirect_turker_to_messages_view,
 )
+
+
+def custom_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse(settings.LOGIN_REDIRECT_URL))
+    else:
+        return LoginView.as_view()(request)
+
 
 urlpatterns = [
     path(r"", include("chats.urls", namespace="chats")),
@@ -37,6 +47,7 @@ urlpatterns = [
         name="django_registration_register",
     ),
     path(r"", include("django_registration.backends.one_step.urls")),
+    path(r"login/", custom_login, name="login"),
     path(r"", include("django.contrib.auth.urls")),
     path(
         "access/<uuid:turker_uuid>/",
@@ -52,4 +63,4 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)),] + urlpatterns
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

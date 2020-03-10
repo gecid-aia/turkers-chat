@@ -2,7 +2,9 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorList
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic import TemplateView
 
 from django_registration.backends.activation.views import (
@@ -33,6 +35,11 @@ class ActivationView(BaseActivationView):
 
 class UserRegistrationView(RegistrationView):
     form_class = UserRegistrationForm
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse(settings.LOGIN_REDIRECT_URL))
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         if not validate_captcha(self.request.POST):
