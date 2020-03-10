@@ -30,7 +30,7 @@ class Chat(models.Model):
                 chat = Chat.objects.get_collective_chat()
                 if chat.id != self.id:
                     raise ValueError(
-                        f"Collective chat already exists with the id {chat.id}"
+                        f"Turkers chat already exists with the id {chat.id}"
                     )
             except Chat.DoesNotExist:
                 pass
@@ -42,7 +42,7 @@ class Chat(models.Model):
 
     @property
     def title(self):
-        return "Collective Chat" if self.is_collective else self.turker.username
+        return "Turkers Chat" if self.is_collective else self.turker.username
 
     @property
     def messages_url(self):
