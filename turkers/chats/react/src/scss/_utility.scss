@@ -97,11 +97,15 @@
 }
 
 .inverted {
-  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  filter:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' ><filter id='invert'><feComponentTransfer><feFuncR type='linear' slope='-1' intercept='1'/><feFuncG type='linear' slope='-1' intercept='1' /><feFuncB type='linear' slope='-1' intercept='1' /></feComponentTransfer></filter></svg>#invert");
+  filter:invert(100%);
 }
 
 .grayscale {
-  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  filter:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' ><filter id='gray'><feColorMatrix in='SourceGraphic' type='saturate' values='0' /></filter></svg>#gray");
+  filter:grayscale(100%);
 }
 
 .vertically-aligned {
