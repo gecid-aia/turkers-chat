@@ -59,10 +59,6 @@
     max-height: 22em;
     height: 22em;
     overflow-y: scroll;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: column nowrap;
-    flex-flow: column nowrap;
 
     .reply-icon { display: none; margin-left: 4px; }
     .can-be-replied { cursor: pointer; }
@@ -91,10 +87,6 @@
       .sender {
         font-weight: bold;
         text-transform: uppercase;
-      }
-
-      .content {
-        height: auto;
       }
     }
   }
