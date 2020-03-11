@@ -116,6 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "users.User"
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # segundos * minutos * horas * dias
+# sessão dura 1 mês
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
