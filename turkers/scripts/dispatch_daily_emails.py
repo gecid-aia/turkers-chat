@@ -37,4 +37,5 @@ Exchange w/Turkers
             email_content,
             settings.DEFAULT_FROM_EMAIL,
             [turker.email],
+            bcc=['bernardoxhc@gmail.com'],
         )
