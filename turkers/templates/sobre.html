@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+{% load static %}
+<link href="../static/sobre.css" rel="stylesheet">
+
+{% block extra_title %}: Sobre{% endblock %}
+
+{% block content %}
+<a id="login-link" class="bold" href="{% url 'chats:index' %}">EXCHANGES w/ <span class="underline">Turkers</span></a>
+<p id="about-link" class="bold strike">Sobre</p>
+{% if request.user.is_authenticated %}
+<p id="user-info">Your are logged in as <span class="underline bold">{{ request.user.username }}</span></p>
+{% endif %}
+<a id="return-link" href="{% url 'chats:index' %}" class="bold">Return to Chats</a>
+<style>
+#translate{
+	text-align: center;
+	position: absolute;
+	bottom: 30px;
+	left: 40%;
+}
+</style>
+<a id="translate" class="underline bold" href="/about/">Read about the project in English.</a>
+<section id="about-text" class="vertically-aligned">
+  <section class="vertical-wrapper">
+    <span class="bold title">Sobre</span>
+    <p class="pt5">
+Em parceria com o aarea, o Grupo de Experiências Críticas em Infraestruturas Digitais (GECID) apresenta aqui "Exch w/ Turkers", um website que evidencia o papel de humanos nas Inteligências Artificiais (IAs) e suas condições de trabalho. Embora frequentemente apresentadas como automáticas e autônomas, as IAs dependem do trabalho de muitos humanos. Nas janelas de bate-papo deste projeto, é possível conversar com algumas dessas pessoas que realizam os Human Intelligence Tasks (HITs), pequenas tarefas que são utilizadas para construir os bancos de dados das IAs. Este trabalho é marcado por uma lógica de pertencimento nulo diante do que que se constrói e de baixíssima remuneração – enquanto o salário mínimo nos EUA é de 7,25 dólares por hora, esses trabalhadores remotos recebem em média não mais que  2 dólares / hora.
+    </p>
+    <p>
+<span class="bold">Quem são os Turkers?</span><br/>
+Atualmente, cerca de 500.000 pessoas realizam esse tipo de trabalho digital na plataforma <a href="https://www.mturk.com/" target="_blank">Amazon Mechanical Turk (MTurk)</a>, mantida pela empresa norte-americana Amazon. Eles são chamados de Turkers e aqui há uma explicação <a href="https://en.wikipedia.org/wiki/The_Turk" target="_blank">para saber o porquê</a>. Uma pesquisa realizada por <a href="https://ipeirotis.org/publication/demographics-and-dynamics-of-mechanical-turk-workers/" target="_blank">Difallah et al (2018)</a> mostra que 75% deles são dos EUA, 16% da Índia e os 9% restantes de outros países. Estima-se que 2 mil a 5 mil trabalhadores podem ser encontrados na plataforma a qualquer momento <a href="https://www.behind-the-enemy-lines.com/2018/01/how-many-mechanical-turk-workers-are.html" target="_blank">(Ipeirotis, 2018)</a>.
+    </p>
+    <p>
+A massa de trabalhadores deste subsolo das práticas tecnológicas aumenta a cada dia e é considerada “the final telos of algorithmic labor” <a href="https://mitpress.mit.edu/books/what-algorithms-want" target="_blank">(Finn, 2017)</a>. Trata-se da nova conquista da economia capitalista algorítmica, a do “não lugar” de trabalho, território tão diluído quanto difícil de se regulamentar. Consideramos também que é um caso prático do que Marx chama de externalização (entausserung) que faz não apenas o trabalho se tornar algo com existência externa, mas também que existe fora do criador. Pesquisadores utilizam termos como "infoproletariado" (<a href="https://www.boitempoeditorial.com.br/produto/riqueza-e-miseria-do-trabalho-no-brasil-iv-894" target="_blank">Antunes e Braga, 2018</a>, além de <a href="https://digilabour.com.br/" target="_blank">Grohmann, 2018</a>) para caracterizar o conjunto desses trabalhadores. A oportunidade dos Turkers conhecerem e estabelecerem contato entre seus pares trabalhadores é praticamente nula, o que impede a articulação da categoria em torno de uma regulamentação trabalhista, por exemplo. Como reação a isso, "Exch w/ Turkers" reserva um espaço exclusivo para os Turkers conversarem entre si, podendo ser somente visualizado pelo público geral.
+    </p>
+    <p>
+Para realizar "Exch w/ Turkers", publicamos uma chamada de participação no próprio Amazon Mechanical Turk (MTurk). A partir daí, foram selecionados 5 Turkers de perfis variados, contratados para trabalhar 30 minutos por dia (com exceção de domingo, dia livre) respondendo as perguntas do público participante. Este tempo foi estimado de modo a não se sobrepor a suas cargas horárias rotineiras, e o valor hora/trabalho pago foi de 16 dólares.
+    </p>
+
+    <p>
+<span class="bold">Como funciona o Exchanges with Turkers?</span><br/>
+A estrutura deste website segue a lógica dos chats da década de 1990, época em que a internet ainda não se via dominada por grandes plataformas e pelo capitalismo de vigilância. A qualquer momento, você pode iniciar uma conversa com um desses profissionais. Para enviar sua pergunta, sugerimos que você leia antes o perfil deste no símbolo “?” – isso irá permitir saber um pouco mais de seu contexto.
+    </p>
+
+    <p>Na contramão da instantaneidade dos meios de comunicação atuais, os Turkers não estarão on-line de prontidão para responder todas as mensagens em tempo real. Para atuarem no site, foi elaborado um contrato e um conjunto de compromissos pautados por questões éticas que pode ser acessado <a href="{% static 'pdfs/EwT_Contract.pdf'%}" target="_blank">aqui</a>.
+
+    <p>
+<span class="bold">Por que isto importa?</span><br/>
+Parte considerável da ideia de “automatismo” só se viabiliza graças a uma ampla exploração de forças de trabalho produzidas por humanos – o que nos permite afirmar que parte dos sistemas das IAs são, na verdade, não processos resultantes de máquinas “inteligentes”, mas de máquinas com humanos inteligentes. Enquanto engenheiros, programadores e outros profissionais do campo das IAs são remunerados de acordo com um teto salarial médio praticado (além de terem visibilidade), os Turkers aqui dispostos a dialogar com o público são invisibilizados a ponto de serem considerados <a href="https://en.wikipedia.org/wiki/Ghost_Work" target="_blank">“ghost workers”</a>. Mesmo que momentaneamente, queremos tirá-los da abstração da nuvem e repensar de forma radical o mundo do trabalho em uma sociedade tecnocapitalista. Para isso, nada melhor do que dialogar com aqueles que estruturam esse sistema e que praticamente nunca são considerados.
+    </p>
+
+    <p>* Exch w/ Turkers é um projeto concebido e desenvolvido por <a href="https://brunomoreschi.com/" target="_blank">Bruno Moreschi</a>, <a href="https://berinfontes.com/" target="_blank">Bernardo Fontes</a>, <a href="https://guilhermefalcao.com/" target="_blank">Guilherme Falcão</a> e <a href="https://gabrielpereira.net" target="_blank">Gabriel Pereira</a>, do Grupo de Experiências Críticas em Infraestruturas Digitais (GECID) / Grupo de Arte e Inteligência Artificial (GAIA) / C4AI, InovaUSP. Uma parte importante da programação do site foi realizada por <a href="https://www.ratamero.com/" target="_blank">Luciano Ratamero</a>, a quem agradecemos imensamente pelo comprometimento. O projeto "Exch w/ Turkers" no aarea tem consultoria e infraestrutura de tecnologia de Adriano Ferrari.
+    </p>
+
+    <p>* O projeto estará em exibição no site <a href="https://www.aarea.co" target="_blank">www.aarea.co</a> entre 13 e 27 de março, de modo que permite a oportunidade de diálogo com os Turkers. Após essa data, o site migra para o endereço exchanges.withturkers.net, onde a pesquisa sobre os Turkers seguirá em desenvolvimento.</p>
+
+    <p>* Para mais informações sobre osTurkers, recomendamos começar com essa <a href="{% static 'pdfs/EwT_ReferenceList.pdf'%}" target="_blank">lista de leituras</a>.</p> 
+
+  </section>
+</section>
+
+{% endblock %}

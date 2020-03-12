@@ -20,6 +20,8 @@ from users.recaptcha import validate_captcha
 class AboutView(TemplateView):
     template_name = "about.html"
 
+class SobreView(TemplateView):
+	template_name = "sobre.html"
 
 class ToSView(TemplateView):
     template_name = "tos.html"
