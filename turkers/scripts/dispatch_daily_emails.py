@@ -36,5 +36,5 @@ Exchange w/Turkers
             'Your daily report from Exchange w/ Turkers',
             email_content,
             settings.DEFAULT_FROM_EMAIL,
-            ['bernardoxhc@gmail.com'],
+            [turker.email],
         )
