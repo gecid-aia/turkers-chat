@@ -63,6 +63,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRDY_PARTY_LIBS + PROJ_APPS
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "users.middleware.redirect_if_exchanges_with_turkers_middleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
