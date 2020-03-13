@@ -2,7 +2,7 @@ from users.models import User
 from chats.models import Chat
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 
 def num_new_messages_in_chat(user, chat):
@@ -32,10 +32,11 @@ Thanks,
 Exchange w/Turkers
 """.strip()
 
-        send_mail(
+        msg = EmailMessage(
             'Your daily report from Exchange w/ Turkers',
             email_content,
             settings.DEFAULT_FROM_EMAIL,
             [turker.email],
             bcc=['bernardoxhc@gmail.com'],
         )
+        msg.send()
