@@ -4,7 +4,9 @@
 {% block content %}
 <a id="login-link" class="bold" href="/login/">EXCHANGES w/ <span class="underline">Turkers</span></a>
 <a id="about-link" class="bold" href="/about/">About</a>
+{% if request.user.is_authenticated %}
 <p id="user-info">Your are logged in as <span class="underline bold">{{ request.user.username }}</span></p>
+{% endif %}
 <div id="chat-react"></div>
 {% render_bundle "main" "js" %}
 {% endblock %}
