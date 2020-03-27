@@ -71,14 +71,7 @@ class UserAvailableChatsEndpoint(ListAPIView):
     serializer_class = ChatSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_regular:
-            return Chat.objects.select_related("turker").all()
-        elif user.is_turker:
-            return [
-                Chat.objects.get_collective_chat(),
-                Chat.objects.get_turker_chat(user.id),
-            ]
+        return Chat.objects.select_related("turker").all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

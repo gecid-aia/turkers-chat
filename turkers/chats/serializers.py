@@ -23,8 +23,7 @@ class MessageSerializer(BaseMessageSerializer):
         ]
 
     def get_accept_reply(self, msg):
-        user = self.context.get("user", None)
-        return msg.user_can_reply(user)
+        return False
 
 
 class NewChatMessageSerializer(serializers.ModelSerializer):

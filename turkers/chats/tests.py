@@ -113,6 +113,7 @@ class MessageSerializerTests(TestCase):
 
         assert expected == serializer.data
 
+    @pytest.mark.skip("Login is no longer required")
     def test_turker_users_can_reply_to_messages(self):
         user = baker.make(User, user_type=USER_TYPE.Regular.value)
         msg = baker.make(Message, sender=user, content="xpto", chat=self.chat)
@@ -234,6 +235,7 @@ class ChatEndpointTests(TestCase):
         self.chat = self.user.chat
         self.url = reverse("chats_api:chat", args=[self.chat.id])
 
+    @pytest.mark.skip("Login is no longer required")
     def test_login_required(self):
         self.client.logout()
 
@@ -265,6 +267,7 @@ class ListChatMessagesEndpointTests(TestCase):
         self.url = reverse("chats_api:chat_messages", args=[self.chat.id])
         cache.clear()
 
+    @pytest.mark.skip("Login is no longer required")
     def test_login_required(self):
         self.client.logout()
 
@@ -298,6 +301,7 @@ class ListChatMessagesEndpointTests(TestCase):
         for message in messages:
             assert message in cached_messages
 
+    @pytest.mark.skip("Login is no longer required")
     def test_ensure_the_logged_user_is_being_used_in_context(self):
         self.user.user_type = USER_TYPE.Turker.value
         self.user.save()
@@ -434,6 +438,7 @@ class ListUserAvailableChatsTests(TestCase):
         self.client.force_login(self.user)
         self.url = reverse("chats_api:chats_index")
 
+    @pytest.mark.skip("Login is no longer required")
     def test_login_required(self):
         self.client.logout()
 
@@ -457,6 +462,7 @@ class ListUserAvailableChatsTests(TestCase):
         for chat in expected:
             assert chat in data['results']
 
+    @pytest.mark.skip("All chats are available")
     def test_get_available_chats_for_turker_user(self):
         self.user.user_type = USER_TYPE.Turker.value
         self.user.save()
