@@ -47,7 +47,10 @@ class ListChatMessagesEndpoint(ListAPIView):
 
         return messages
 
-    def post(self, request, chat_id):
+    def old_post(self, request, chat_id):
+        """
+        This was the previous post implementation to allow write operations in our API
+        """
         chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
         data = {
             "content": request.data.get("content", "").strip(),
