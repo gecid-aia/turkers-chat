@@ -161,7 +161,7 @@ class ChatSerializerTests(TestCase):
             "id": chat.id,
             "messages_url": reverse("chats_api:chat_messages", args=[chat.id]),
             "is_collective": True,
-            "open_for_messages": True,
+            "open_for_messages": False,
         }
         serializer = ChatSerializer(instance=chat, context={"user": self.turker})
 
@@ -191,7 +191,7 @@ class ChatSerializerTests(TestCase):
             "id": chat.id,
             "messages_url": reverse("chats_api:chat_messages", args=[chat.id]),
             "is_collective": False,
-            "open_for_messages": True,
+            "open_for_messages": False,
         }
         serializer = ChatSerializer(instance=chat, context={"user": self.turker})
 
@@ -208,11 +208,13 @@ class NewChatMessageSerializerTests(TestCase):
             'chat': self.chat.id,
         }
 
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_valid_message(self):
         serializer = NewChatMessageSerializer(data=self.data)
 
         assert serializer.is_valid()
 
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_clean_message_if_profanity(self):
         self.data['content'] = 'alguma coisa assada'
         serializer = NewChatMessageSerializer(data=self.data)
@@ -306,7 +308,7 @@ class ListChatMessagesEndpointTests(TestCase):
 
         assert data["results"][0]["accept_reply"] is True
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_add_new_message_on_post(self):
         cache_key = f'chat-{self.chat.id}-messages'
         baker.make(Message, chat=self.chat, _quantity=42)  # add messages to the chat
@@ -328,7 +330,7 @@ class ListChatMessagesEndpointTests(TestCase):
         assert new_msg.reply_to is None
         assert cache.get(cache_key) is None  # clears cache after new msg
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_reply_to_a_message(self):
         msg = baker.make(Message, chat=self.chat)
         self.user.user_type = USER_TYPE.Turker.value
@@ -348,7 +350,7 @@ class ListChatMessagesEndpointTests(TestCase):
         assert self.chat == new_msg.chat
         assert msg == new_msg.reply_to
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_bad_request_if_no_messages(self):
         response = self.client.post(self.url, data={"content": ""})
         assert 400 == response.status_code
@@ -364,7 +366,7 @@ class ListChatMessagesEndpointTests(TestCase):
 
         assert Message.objects.exists() is False
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_bad_request_if_reply_to_is_from_another_chat(self):
         other_turker = baker.make(User, user_type=USER_TYPE.Turker.value)
         msg = baker.make(Message, chat=other_turker.chat)
@@ -378,7 +380,7 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 400 == response.status_code
         assert "non_field_errors" in response.json()
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_bad_request_if_reply_from_regular_user(self):
         msg = baker.make(Message, chat=self.chat)
 
@@ -388,13 +390,13 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 400 == response.status_code
         assert "non_field_errors" in response.json()
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_404_post_on_unexisting_chat(self):
         self.url = reverse("chats_api:chat_messages", args=[1000])
         response = self.client.post(self.url, data={"content": "new msg"})
         assert 404 == response.status_code
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_regular_user_can_not_post_on_collective_chat(self):
         chat = Chat.objects.get_collective_chat()
         url = reverse("chats_api:chat_messages", args=[chat.id])
@@ -404,7 +406,7 @@ class ListChatMessagesEndpointTests(TestCase):
         assert 400 == response.status_code
         assert "non_field_errors" in response.json()
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_turker_user_not_post_on_collective_chat(self):
         chat = Chat.objects.get_collective_chat()
         url = reverse("chats_api:chat_messages", args=[chat.id])
@@ -414,7 +416,7 @@ class ListChatMessagesEndpointTests(TestCase):
 
         assert 201 == response.status_code
 
-    @pytest.mark.skip("POST operation is no longer allowd.")
+    @pytest.mark.skip("POST operation is no longer allowed.")
     def test_400_if_message_is_to_long(self):
         response = self.client.post(self.url, data={"content": "a" * 1025})
 
