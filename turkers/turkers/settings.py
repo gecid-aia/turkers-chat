@@ -10,13 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import dj_database_url
 import django_heroku
 import os
 import sentry_sdk
+from better_profanity import profanity
 from decouple import config
 from pathlib import Path
 from sentry_sdk.integrations.django import DjangoIntegration
-from better_profanity import profanity
 
 BASE_DIR = Path(__file__).parents[1]
 
@@ -96,14 +97,9 @@ WSGI_APPLICATION = "turkers.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": str(BASE_DIR.joinpath("db.sqlite3")),
-    }
+    'default': dj_database_url.config(default='postgres://postgres:postgres@localhost:5432/turkers')
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

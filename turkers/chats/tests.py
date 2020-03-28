@@ -176,7 +176,7 @@ class ChatSerializerTests(TestCase):
             "id": chat.id,
             "messages_url": reverse("chats_api:chat_messages", args=[chat.id]),
             "is_collective": False,
-            "open_for_messages": True,
+            "open_for_messages": False,
         }
         serializer = ChatSerializer(instance=chat, context={"user": self.user})
 
@@ -311,17 +311,18 @@ class ListChatMessagesEndpointTests(TestCase):
         baker.make(Message, chat=self.chat, _quantity=42)  # add messages to the chat
         self.client.get(self.url)  # populates cache
         assert cache.get(cache_key)  # ensures cache is populated
+        self.client.force_login(self.turker_user)
 
         response = self.client.post(self.url, data={"content": "new msg"})
         new_msg = Message.objects.first()
         expected = MessageSerializer(
-            instance=new_msg, context={"user": self.user},
+            instance=new_msg, context={"user": self.turker_user},
         ).data
 
         assert 201 == response.status_code
         assert "new msg" == new_msg.content
         assert expected == response.json()
-        assert self.user == new_msg.sender
+        assert self.turker_user == new_msg.sender
         assert self.chat == new_msg.chat
         assert new_msg.reply_to is None
         assert cache.get(cache_key) is None  # clears cache after new msg
@@ -437,7 +438,9 @@ class ListUserAvailableChatsTests(TestCase):
         data = response.json()
 
         assert 200 == response.status_code
-        assert expected == data["results"]
+        assert len(expected) == len(data['results'])
+        for chat in expected:
+            assert chat in data['results']
 
     def test_get_available_chats_for_turker_user(self):
         self.user.user_type = USER_TYPE.Turker.value
