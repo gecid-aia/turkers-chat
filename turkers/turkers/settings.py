@@ -192,6 +192,9 @@ if not DEBUG:
 
 # Cache configuration
 REDIS_URL = config('REDISCLOUD_URL', '')
+if not REDIS_URL:
+    REDIS_URL = config('REDIS_URL', '')
+
 CACHE_DEFAULT_TIMEOUT = 60 * 60 * 24  # 1 day
 
 if REDIS_URL.startswith('redis'):
