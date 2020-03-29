@@ -23,7 +23,7 @@ let Messages = class extends React.Component {
     const { messagesUrl, chatId } = this.props;
     this.props.getChatMessages({ messagesUrl, chatId });
     this.setState({
-      scheduler: setInterval(() => this.props.getChatMessages({ messagesUrl, chatId }), 2000)
+      scheduler: setInterval(() => this.props.getChatMessages({ messagesUrl, chatId }), 1000 * 60)
     });
   }
 

@@ -53,7 +53,7 @@ class Chat(models.Model):
         return f'chat-{self.id}-messages'
 
     def user_can_post(self, user):
-        return user.is_turker
+        return False
 
     def __str__(self):
         return self.title

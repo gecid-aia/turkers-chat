@@ -47,7 +47,10 @@ class ListChatMessagesEndpoint(ListAPIView):
 
         return messages
 
-    def post(self, request, chat_id):
+    def old_post(self, request, chat_id):
+        """
+        This was the previous post implementation to allow write operations in our API
+        """
         chat = get_object_or_404(Chat, id=self.kwargs["chat_id"])
         data = {
             "content": request.data.get("content", "").strip(),
@@ -68,14 +71,7 @@ class UserAvailableChatsEndpoint(ListAPIView):
     serializer_class = ChatSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_regular:
-            return Chat.objects.select_related("turker").all()
-        elif user.is_turker:
-            return [
-                Chat.objects.get_collective_chat(),
-                Chat.objects.get_turker_chat(user.id),
-            ]
+        return Chat.objects.select_related("turker").all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
