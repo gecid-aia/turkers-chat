@@ -11,6 +11,18 @@
   .title { float: left; font-size: 3rem; padding: 1rem 0; }
 
   a {text-decoration: underline;}
+
+  #logos {
+    display: "block";
+    text-align: center;
+
+
+    img {
+      width:23%;
+      vertical-align: middle;
+      display: "inline-block";
+    }
+  }
 }
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
